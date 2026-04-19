@@ -1,4 +1,4 @@
-package com.codeartify.managingcustomers
+package com.codeartify.managingmemberships
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.axonframework.config.EventProcessingConfigurer
@@ -13,6 +13,7 @@ import org.springframework.kafka.annotation.KafkaListener
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory
 import org.springframework.kafka.core.ConsumerFactory
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory
+import org.springframework.kafka.listener.ContainerProperties
 import org.springframework.stereotype.Component
 
 @Configuration
@@ -30,7 +31,7 @@ class KafkaConsumerConfig {
     ): ConsumerFactory<String, ByteArray> {
         val props = mapOf<String, Any>(
             "bootstrap.servers" to bootstrapServers,
-            "group.id" to "managing-customers-group-v2",
+            "group.id" to "managing-memberships-group-v2",
             "key.deserializer" to "org.apache.kafka.common.serialization.StringDeserializer",
             "value.deserializer" to "org.apache.kafka.common.serialization.ByteArrayDeserializer",
             "auto.offset.reset" to "latest",
@@ -46,7 +47,7 @@ class KafkaConsumerConfig {
     ): ConcurrentKafkaListenerContainerFactory<String, ByteArray> {
         val factory = ConcurrentKafkaListenerContainerFactory<String, ByteArray>()
         factory.consumerFactory = consumerFactory
-        factory.containerProperties.ackMode = org.springframework.kafka.listener.ContainerProperties.AckMode.RECORD
+        factory.containerProperties.ackMode = ContainerProperties.AckMode.RECORD
         return factory
     }
 }
@@ -58,7 +59,7 @@ class KafkaEventListener(
 ) {
     private val log = LoggerFactory.getLogger(javaClass)
 
-    @KafkaListener(topics = ["axon.events"], groupId = "managing-customers-group-v2")
+    @KafkaListener(topics = ["axon.events"], groupId = "managing-memberships-group-v2")
     fun listen(message: ByteArray) {
         try {
             log.info("Received raw Kafka message, size: {} bytes", message.size)
