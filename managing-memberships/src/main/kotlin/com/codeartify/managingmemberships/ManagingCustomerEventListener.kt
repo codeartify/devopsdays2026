@@ -1,13 +1,14 @@
 package com.codeartify.managingmemberships
 
-import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.kafka.annotation.KafkaListener
 import org.springframework.stereotype.Component
+import java.time.LocalDate
 
 @Component
 class ManagingCustomerIntegrationConsumer(
-    private val objectMapper: ObjectMapper
+    private val objectMapper: ObjectMapper,
+    private val customerRepository: CustomerRepository
 ) {
 
     @KafkaListener(topics = ["\${app.kafka.topics.managing-customer}"])
@@ -26,6 +27,7 @@ class ManagingCustomerIntegrationConsumer(
     }
 
     private fun handleCustomerRegistered(event: CustomerRegisteredIntegrationEventV1) {
-        println("Handled: $event")
+        customerRepository.save(CustomerEntity(event.customerId, event.name,  event.dateOfBirth))
+
     }
 }
