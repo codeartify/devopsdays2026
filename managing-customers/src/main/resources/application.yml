@@ -21,19 +21,15 @@ spring:
 
 axon:
   axonserver:
-    enabled: false
+    enabled: false   # no Axon Server
+
   kafka:
     bootstrap-servers: localhost:9092
     client-id: managing-customers
     default-topic: axon.events
 
+    # publish events from local event store to Kafka
     producer:
-      transaction-id-prefix: managing-customers-producer
-
-    publisher:
-      enabled: false  # Disable Kafka publisher to prevent republishing
-
-    consumer:
       event-processor-mode: subscribing
 
   serializer:

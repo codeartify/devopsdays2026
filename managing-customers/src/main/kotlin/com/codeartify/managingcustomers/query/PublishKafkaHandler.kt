@@ -1,10 +1,9 @@
-package com.codeartify.managingcustomers
+package com.codeartify.managingcustomers.query
 
 import com.codeartify.managingcustomers.command.CustomerRegisteredEvent
-import com.codeartify.managingcustomers.query.CustomerRepository
+import org.axonframework.commandhandling.gateway.CommandGateway
 import org.axonframework.config.ProcessingGroup
 import org.axonframework.eventhandling.EventHandler
-import org.axonframework.queryhandling.QueryUpdateEmitter
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 
@@ -12,8 +11,7 @@ import org.springframework.stereotype.Component
 @Component
 @ProcessingGroup("kafka-producer")
 class PublishKafkaHandler(
-    private val customerRepository: CustomerRepository,
-    private val queryUpdateEmitter: QueryUpdateEmitter
+    private val commandGateway: CommandGateway
 ) {
     private val log = LoggerFactory.getLogger(javaClass)
 

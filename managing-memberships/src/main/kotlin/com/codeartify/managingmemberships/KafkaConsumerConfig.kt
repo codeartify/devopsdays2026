@@ -59,7 +59,7 @@ class KafkaEventListener(
 ) {
     private val log = LoggerFactory.getLogger(javaClass)
 
-    @KafkaListener(topics = ["axon.events"], groupId = "managing-memberships-group-v2")
+    @KafkaListener(topics = ["axon.events"], groupId = "managing-customers-group-v2")
     fun listen(message: ByteArray) {
         try {
             log.info("Received raw Kafka message, size: {} bytes", message.size)
