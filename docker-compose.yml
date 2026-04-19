@@ -10,14 +10,14 @@ services:
     ports:
       - "5433:5432"
 
-  postgres-orders:
+  postgres-memberships:
     image: postgres:18
-    container_name: postgres-orders
+    container_name: postgres-memberships
     restart: always
     environment:
       POSTGRES_USER: test
       POSTGRES_PASSWORD: test
-      POSTGRES_DB: orders
+      POSTGRES_DB: memberships
     ports:
       - "5434:5432"
 
