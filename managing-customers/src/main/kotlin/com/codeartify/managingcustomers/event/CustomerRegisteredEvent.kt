@@ -1,4 +1,4 @@
-package com.codeartify.managingcustomers.command
+package com.codeartify.managingcustomers.event
 
 import org.axonframework.serialization.Revision
 import java.time.LocalDate

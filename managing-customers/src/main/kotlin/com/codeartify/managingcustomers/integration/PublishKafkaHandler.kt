@@ -1,6 +1,6 @@
-package com.codeartify.managingcustomers.query
+package com.codeartify.managingcustomers.integration
 
-import com.codeartify.managingcustomers.command.CustomerRegisteredEvent
+import com.codeartify.managingcustomers.event.CustomerRegisteredEvent
 import org.axonframework.config.ProcessingGroup
 import org.axonframework.eventhandling.EventHandler
 import org.slf4j.LoggerFactory
@@ -28,4 +28,3 @@ class PublishKafkaHandler private constructor(
     }
 
 }
-

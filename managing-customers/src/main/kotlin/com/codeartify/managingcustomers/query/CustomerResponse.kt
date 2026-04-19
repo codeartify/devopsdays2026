@@ -1,4 +1,4 @@
-package com.codeartify.managingcustomers.dto
+package com.codeartify.managingcustomers.query
 
 data class CustomerResponse(
     val id: String,

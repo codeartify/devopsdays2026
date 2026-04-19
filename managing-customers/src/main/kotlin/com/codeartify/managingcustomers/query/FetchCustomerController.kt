@@ -1,7 +1,5 @@
-package com.codeartify.managingcustomers
+package com.codeartify.managingcustomers.query
 
-import com.codeartify.managingcustomers.dto.CustomerResponse
-import com.codeartify.managingcustomers.query.GetCustomerQuery
 import org.axonframework.queryhandling.QueryGateway
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -20,4 +18,3 @@ class FetchCustomerController(
         return queryGateway.query(GetCustomerQuery(id), CustomerResponse::class.java)
     }
 }
-
