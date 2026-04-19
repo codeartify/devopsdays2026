@@ -1,10 +1,7 @@
-package com.codeartify.managingcustomers
+package com.codeartify.managingcustomers.query
 
 import com.codeartify.managingcustomers.command.CustomerRegisteredEvent
 import com.codeartify.managingcustomers.dto.CustomerResponse
-import com.codeartify.managingcustomers.query.CustomerEntity
-import com.codeartify.managingcustomers.query.CustomerRepository
-import com.codeartify.managingcustomers.query.GetCustomerQuery
 import org.axonframework.config.ProcessingGroup
 import org.axonframework.eventhandling.EventHandler
 import org.axonframework.queryhandling.QueryHandler
@@ -17,7 +14,7 @@ import org.springframework.stereotype.Component
 class CustomerQueryHandler(
     private val customerRepository: CustomerRepository,
     private val queryUpdateEmitter: QueryUpdateEmitter
-) {π
+) {
 
     @EventHandler
     fun on(evt: CustomerRegisteredEvent) {
