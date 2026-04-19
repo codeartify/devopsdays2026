@@ -1,10 +1,19 @@
 server:
   port: 8082
-
+app:
+  kafka:
+    topics:
+      managing-customer: managing-customer.integration-events.v1
 spring:
   application:
     name: managing-customers
-
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    properties:
+      spring.json.add.type.headers: false
   datasource:
     url: jdbc:postgresql://localhost:5433/customers
     username: test
@@ -22,16 +31,6 @@ spring:
 axon:
   axonserver:
     enabled: false   # no Axon Server
-
-  kafka:
-    bootstrap-servers: localhost:9092
-    client-id: managing-customers
-    default-topic: axon.events
-
-    # publish events from local event store to Kafka
-    producer:
-      event-processor-mode: subscribing
-
   serializer:
     general: jackson
     events: jackson
