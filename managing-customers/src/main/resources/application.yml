@@ -1,0 +1,49 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: managing-customers
+
+  datasource:
+    url: jdbc:postgresql://localhost:5433/customers
+    username: test
+    password: test
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
+
+axon:
+  axonserver:
+    enabled: false
+  kafka:
+    bootstrap-servers: localhost:9092
+    client-id: managing-customers
+    default-topic: axon.events
+
+    producer:
+      transaction-id-prefix: managing-customers-producer
+
+    publisher:
+      enabled: false  # Disable Kafka publisher to prevent republishing
+
+    consumer:
+      event-processor-mode: subscribing
+
+  serializer:
+    general: jackson
+    events: jackson
+    messages: jackson
+
+logging:
+  level:
+    org.axonframework: DEBUG
+    com.codeartify: DEBUG
+
+

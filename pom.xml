@@ -12,15 +12,15 @@
     </parent>
 
     <groupId>com.codeartify</groupId>
-    <artifactId>kafka-axon-parent</artifactId>
+    <artifactId>fitness-management-system</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>kafka-axon-parent</name>
+    <name>fitness-management-system</name>
     <description>Parent POM for Axon Kafka services</description>
 
     <modules>
-        <module>order-service</module>
-        <module>customer-service</module>
+        <module>managing-memberships</module>
+        <module>managing-customers</module>
     </modules>
 
     <properties>

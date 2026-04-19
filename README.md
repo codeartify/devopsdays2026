@@ -8,13 +8,13 @@ A multi-service event-driven architecture using Event-Sourced DDD Aggregates fro
 
 The system is built around two independent bounded contexts:
 
-- **Order Bounded Context** (order-service) — Handles order placement and maintains order data
-- **Customer Bounded Context** (customer-service) — Manages customers and tracks orders they placed
+- **Order Bounded Context** (managing-memberships) — Handles order placement and maintains order data
+- **Customer Bounded Context** (managing-customers) — Manages customers and tracks orders they placed
 
 ## Services
 
-- **order-service** — Handles order placement (port 8081)
-- **customer-service** — Manages customers (port 8082)
+- **managing-memberships** — Handles order placement (port 8081)
+- **managing-customers** — Manages customers (port 8082)
 - **Kafka** — Event streaming between services
 - **PostgreSQL** — Two databases: one for orders (port 5434), one for customers (port 5433)
 
@@ -46,13 +46,13 @@ This starts:
 
 Start the Order Service:
 ```bash
-cd order-service
+cd managing-memberships
 mvn spring-boot:run
 ```
 
 Start the Customer Service (in a new terminal):
 ```bash
-cd customer-service
+cd managing-customers
 mvn spring-boot:run
 ```
 
