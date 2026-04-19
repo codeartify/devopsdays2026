@@ -3,7 +3,6 @@ package com.codeartify.customerservice
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.axonframework.config.EventProcessingConfigurer
 import org.axonframework.eventhandling.EventBus
-import org.axonframework.eventhandling.GenericEventMessage
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -63,8 +62,8 @@ class KafkaEventListener(
     fun listen(message: ByteArray) {
         try {
             log.info("Received raw Kafka message, size: {} bytes", message.size)
-            val event = objectMapper.readValue(message, OrderPlacedEvent::class.java)
-            eventBus.publish(GenericEventMessage.asEventMessage<OrderPlacedEvent>(event))
+            // val event = objectMapper.readValue(message, OrderPlacedEvent::class.java)
+            // eventBus.publish(GenericEventMessage.asEventMessage<OrderPlacedEvent>(event))
         } catch (e: Exception) {
             log.error("Failed to process Kafka message", e)
         }
