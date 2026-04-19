@@ -7,6 +7,7 @@ import com.codeartify.customerservice.query.CustomerRepository
 import com.codeartify.customerservice.query.GetCustomerQuery
 import org.axonframework.config.ProcessingGroup
 import org.axonframework.eventhandling.EventHandler
+import org.axonframework.queryhandling.QueryGateway
 import org.axonframework.queryhandling.QueryHandler
 import org.axonframework.queryhandling.QueryUpdateEmitter
 import org.springframework.stereotype.Component
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Component
 @ProcessingGroup("customer-query-processing")
 class CustomerQueryHandler(
     private val customerRepository: CustomerRepository,
+    private val queryGateway: QueryGateway,
     private val queryUpdateEmitter: QueryUpdateEmitter
 ) {
     @EventHandler
@@ -25,6 +27,8 @@ class CustomerQueryHandler(
             id = customerEntity.id,
             name = customerEntity.name,
         )
+
+        // informs subscription queries about persisted changes
         queryUpdateEmitter.emit(GetCustomerQuery::class.java, { it.customerId == evt.customerId }, response)
     }
 
