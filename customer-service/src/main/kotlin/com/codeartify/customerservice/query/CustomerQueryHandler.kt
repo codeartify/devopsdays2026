@@ -1,7 +1,7 @@
 package com.codeartify.customerservice
 
 import com.codeartify.customerservice.command.CustomerRegisteredEvent
-import com.codeartify.customerservice.presentation.CustomerResponse
+import com.codeartify.customerservice.dto.CustomerResponse
 import com.codeartify.customerservice.query.CustomerEntity
 import com.codeartify.customerservice.query.CustomerRepository
 import com.codeartify.customerservice.query.GetCustomerQuery
@@ -24,7 +24,6 @@ class CustomerQueryHandler(
         val response = CustomerResponse(
             id = customerEntity.id,
             name = customerEntity.name,
-            orderIds = emptyList()
         )
         queryUpdateEmitter.emit(GetCustomerQuery::class.java, { it.customerId == evt.customerId }, response)
     }

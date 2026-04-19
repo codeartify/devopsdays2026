@@ -1,6 +1,6 @@
 package com.codeartify.customerservice
 
-import com.codeartify.customerservice.presentation.CustomerResponse
+import com.codeartify.customerservice.dto.CustomerResponse
 import com.codeartify.customerservice.query.CustomerRepository
 import org.axonframework.commandhandling.gateway.CommandGateway
 import org.axonframework.queryhandling.QueryGateway

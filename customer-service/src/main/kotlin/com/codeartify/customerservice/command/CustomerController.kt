@@ -1,15 +1,16 @@
-package com.codeartify.customerservice
+package com.codeartify.customerservice.command
 
-import com.codeartify.customerservice.command.RegisterCustomerCommand
-import com.codeartify.customerservice.presentation.CustomerResponse
-import com.codeartify.customerservice.presentation.RegisterCustomerRequest
+import com.codeartify.customerservice.dto.CustomerResponse
 import com.codeartify.customerservice.query.CustomerRepository
 import com.codeartify.customerservice.query.GetCustomerQuery
 import org.axonframework.commandhandling.gateway.CommandGateway
 import org.axonframework.messaging.responsetypes.ResponseTypes
 import org.axonframework.queryhandling.QueryGateway
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 import java.time.Duration
 import java.util.*
 
@@ -42,15 +43,4 @@ class CustomerController(
         }
     }
 
-    @GetMapping("/{id}")
-    fun getCustomer(@PathVariable id: String): ResponseEntity<CustomerResponse> {
-        val customer = customerRepository.findById(id).orElseThrow()
-        return ResponseEntity.ok(
-            CustomerResponse(
-                id = customer.id,
-                name = customer.name,
-            )
-        )
-    }
 }
-
