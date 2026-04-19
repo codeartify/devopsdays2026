@@ -17,8 +17,6 @@ class Customer() {
     lateinit var name: String
     lateinit var dateOfBirth: LocalDate
 
-
-
     @CommandHandler
     @CreationPolicy(AggregateCreationPolicy.ALWAYS)
    fun register(cmd: RegisterCustomerCommand) {

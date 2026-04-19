@@ -9,9 +9,7 @@ import org.axonframework.config.ProcessingGroup
 import org.axonframework.eventhandling.EventHandler
 import org.axonframework.queryhandling.QueryHandler
 import org.axonframework.queryhandling.QueryUpdateEmitter
-import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
-import kotlin.math.log
 
 
 @Component
@@ -19,16 +17,16 @@ import kotlin.math.log
 class CustomerQueryHandler(
     private val customerRepository: CustomerRepository,
     private val queryUpdateEmitter: QueryUpdateEmitter
-) {
-    private val log = LoggerFactory.getLogger(javaClass)
+) {π
 
     @EventHandler
     fun on(evt: CustomerRegisteredEvent) {
-        val customerEntity = customerRepository.save(CustomerEntity(evt.customerId, evt.name))
+        val customerEntity = customerRepository.save(CustomerEntity(evt.customerId, evt.name, evt.dateOfBirth.toString()))
 
         val response = CustomerResponse(
             id = customerEntity.id,
             name = customerEntity.name,
+            dateOfBirth = customerEntity.dateOfBirth
         )
 
         // informs subscription queries about persisted changes
@@ -39,10 +37,11 @@ class CustomerQueryHandler(
     fun handle(query: GetCustomerQuery): CustomerResponse? {
         return customerRepository
             .findById(query.customerId)
-            .map {
+            .map {entity ->
                 CustomerResponse(
-                    id = it.id,
-                    name = it.name,
+                    id = entity.id,
+                    name = entity.name,
+                    dateOfBirth = entity.dateOfBirth
                 )
             }
             .orElse(null)
