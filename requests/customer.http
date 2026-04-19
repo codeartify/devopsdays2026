@@ -4,7 +4,7 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "name": "XY Zihler",
+  "name": "QRS Zihler",
   "dateOfBirth": "2010-04-19"
 }
 > {%
