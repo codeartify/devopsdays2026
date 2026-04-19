@@ -5,6 +5,7 @@ import org.axonframework.eventsourcing.EventSourcingHandler
 import org.axonframework.modelling.command.AggregateIdentifier
 import org.axonframework.modelling.command.AggregateLifecycle
 import org.axonframework.spring.stereotype.Aggregate
+import java.time.LocalDate
 
 @Aggregate
 class CustomerAggregate() {
@@ -18,6 +19,7 @@ class CustomerAggregate() {
     constructor(cmd: RegisterCustomerCommand) : this() {
         require(cmd.customerId.isNotBlank()) { "Customer ID must not be blank" }
         require(cmd.name.isNotBlank()) { "Name must not be blank" }
+        require(cmd.dateOfBirth.isBefore(LocalDate.now().minusYears(16).plusDays(1))) { "Customer must be at least 16 years old" }
 
         AggregateLifecycle.apply(CustomerRegisteredEvent(cmd.customerId, cmd.name))
     }

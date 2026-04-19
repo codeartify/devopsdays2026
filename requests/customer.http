@@ -4,10 +4,11 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "name": "Oliver Zihler"
+  "name": "XY Zihler",
+  "dateOfBirth": "2010-04-19"
 }
 > {%
-    client.global.set("customerId", response.body.id);
+    client.global.set("customerId", response.body);
 %}
 
 ### Get customer
