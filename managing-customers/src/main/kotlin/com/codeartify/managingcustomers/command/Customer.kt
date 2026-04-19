@@ -1,5 +1,6 @@
 package com.codeartify.managingcustomers.command
 
+import com.codeartify.managingcustomers.event.CustomerRegisteredEvent
 import org.axonframework.commandhandling.CommandHandler
 import org.axonframework.eventsourcing.EventSourcingHandler
 import org.axonframework.modelling.command.AggregateCreationPolicy

@@ -1,4 +1,4 @@
-package com.codeartify.managingcustomers.query
+package com.codeartify.managingcustomers.integration
 
 import com.fasterxml.jackson.databind.JsonNode
 

@@ -1,4 +1,4 @@
-package com.codeartify.managingcustomers.query;
+package com.codeartify.managingcustomers.integration;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
