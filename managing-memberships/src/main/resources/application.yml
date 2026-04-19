@@ -6,7 +6,7 @@ spring:
     name: managing-memberships
 
   datasource:
-    url: jdbc:postgresql://localhost:5434/orders
+    url: jdbc:postgresql://localhost:5434/memberships
     username: test
     password: test
   jpa:
@@ -14,18 +14,24 @@ spring:
       ddl-auto: update
     database-platform: org.hibernate.dialect.PostgreSQLDialect
 
+  kafka:
+    bootstrap-servers: localhost:9092
+
+    consumer:
+      group-id: managing-customer-readmodel
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+
+    listener:
+      ack-mode: record
+app:
+  kafka:
+    topics:
+      managing-customer: managing-customer.integration-events.v1
 axon:
   axonserver:
     enabled: false   # no Axon Server
-
-  kafka:
-    bootstrap-servers: localhost:9092
-    client-id: managing-memberships
-    default-topic: axon.events
-
-    # publish events from local event store to Kafka
-    producer:
-      event-processor-mode: subscribing
 
   serializer:
     general: jackson
