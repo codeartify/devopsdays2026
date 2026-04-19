@@ -1,35 +1,23 @@
 package com.codeartify.customerservice
 
 import com.codeartify.customerservice.dto.CustomerResponse
-import com.codeartify.customerservice.query.CustomerRepository
-import org.axonframework.commandhandling.gateway.CommandGateway
+import com.codeartify.customerservice.query.GetCustomerQuery
 import org.axonframework.queryhandling.QueryGateway
-import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import java.util.concurrent.CompletableFuture
 
 @RestController
 @RequestMapping("/customers")
 class FetchCustomerController(
-    private val commandGateway: CommandGateway,
-    private val queryGateway: QueryGateway,
-    private val customerRepository: CustomerRepository
+    private val queryGateway: QueryGateway
 ) {
 
     @GetMapping("/{id}")
-    fun getCustomer(@PathVariable id: String): ResponseEntity<CustomerResponse> {
-        val customer = customerRepository.findById(id).orElseThrow()
-
-        val response = CustomerResponse(
-            id = customer.id,
-            name = customer.name,
-        )
-
-        return ResponseEntity.ok(
-            response
-        )
+    fun getCustomer(@PathVariable id: String): CompletableFuture<CustomerResponse?>? {
+        return queryGateway.query(GetCustomerQuery(id), CustomerResponse::class.java)
     }
 }
 

@@ -19,7 +19,6 @@ import java.util.*
 class CustomerController(
     private val commandGateway: CommandGateway,
     private val queryGateway: QueryGateway,
-    private val customerRepository: CustomerRepository
 ) {
 
     @PostMapping("/register")
@@ -33,7 +32,7 @@ class CustomerController(
         )
 
         subscriptionQuery.use { subscriptionQuery ->
-            commandGateway.sendAndWait<String>(RegisterCustomerCommand(customerId, request.name))
+            commandGateway.send<String>(RegisterCustomerCommand(customerId, request.name))
 
             val customer = subscriptionQuery.updates()
                 .blockFirst(Duration.ofSeconds(5))
