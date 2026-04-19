@@ -22,7 +22,7 @@ class KafkaConsumerConfig {
 
     @Autowired
     fun configureEventProcessing(eventProcessingConfigurer: EventProcessingConfigurer) {
-        eventProcessingConfigurer.registerSubscribingEventProcessor("customer-order-processing")
+        eventProcessingConfigurer.registerSubscribingEventProcessor("customer-membership-processing")
     }
 
     @Bean
