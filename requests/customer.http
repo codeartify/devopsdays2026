@@ -1,0 +1,15 @@
+### Register customer
+POST http://localhost:8082/customers/register
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Oliver Zihler"
+}
+> {%
+    client.global.set("customerId", response.body.id);
+%}
+
+### Get customer
+GET http://localhost:8082/customers/{{customerId}}
+Accept: application/json
