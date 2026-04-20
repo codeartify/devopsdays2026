@@ -1,4 +1,4 @@
-package com.codeartify.managingmemberships
+package com.codeartify.managingmemberships.query
 
 import jakarta.persistence.Entity
 import jakarta.persistence.Id

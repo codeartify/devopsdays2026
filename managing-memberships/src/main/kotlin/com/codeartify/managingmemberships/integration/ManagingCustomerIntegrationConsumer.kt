@@ -1,9 +1,10 @@
-package com.codeartify.managingmemberships
+package com.codeartify.managingmemberships.integration
 
+import com.codeartify.managingmemberships.query.CustomerEntity
+import com.codeartify.managingmemberships.query.CustomerRepository
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.kafka.annotation.KafkaListener
 import org.springframework.stereotype.Component
-import java.time.LocalDate
 
 @Component
 class ManagingCustomerIntegrationConsumer(
@@ -27,7 +28,6 @@ class ManagingCustomerIntegrationConsumer(
     }
 
     private fun handleCustomerRegistered(event: CustomerRegisteredIntegrationEventV1) {
-        customerRepository.save(CustomerEntity(event.customerId, event.name,  event.dateOfBirth))
-
+        customerRepository.save(CustomerEntity(event.customerId, event.name, event.dateOfBirth))
     }
 }
