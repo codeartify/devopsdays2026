@@ -4,8 +4,8 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "name": "QRS Zihler",
-  "dateOfBirth": "2010-04-19"
+  "name": "Too Young",
+  "dateOfBirth": "2015-04-19"
 }
 > {%
     client.global.set("customerId", response.body);

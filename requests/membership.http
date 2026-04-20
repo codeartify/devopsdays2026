@@ -1,6 +1,11 @@
 ### Activate membership
 POST http://localhost:8081/memberships/activate
+Content-Type: application/json
 Accept: application/json
+
+{
+  "customerId": "{{customerId}}"
+}
 
 > {%
     client.global.set("membershipId", response.body);

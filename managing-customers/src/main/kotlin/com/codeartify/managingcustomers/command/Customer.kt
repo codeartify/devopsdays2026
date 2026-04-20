@@ -23,7 +23,6 @@ class Customer() {
    fun register(cmd: RegisterCustomerCommand) {
         require(cmd.customerId.isNotBlank()) { "Customer ID must not be blank" }
         require(cmd.name.isNotBlank()) { "Name must not be blank" }
-        require(cmd.dateOfBirth.isBefore(LocalDate.now().minusYears(16).plusDays(1))) { "Customer must be at least 16 years old" }
 
         apply(
             CustomerRegisteredEvent(
