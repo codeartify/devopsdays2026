@@ -1,7 +1,7 @@
-package com.codeartify.managingmemberships.command
+package com.codeartify.managingmemberships.domain
 
 import org.axonframework.modelling.command.TargetAggregateIdentifier
 
-data class ReactivateMembershipCommand(
+data class PauseMembershipCommand(
     @TargetAggregateIdentifier val membershipId: MembershipId
 )

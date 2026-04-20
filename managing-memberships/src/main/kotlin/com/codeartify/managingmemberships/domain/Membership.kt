@@ -1,14 +1,10 @@
-package com.codeartify.managingmemberships.command
+package com.codeartify.managingmemberships.domain
 
-import com.codeartify.managingmemberships.event.MembershipActivatedEvent
-import com.codeartify.managingmemberships.event.MembershipPausedEvent
-import com.codeartify.managingmemberships.event.MembershipReactivatedEvent
-import com.codeartify.managingmemberships.event.MembershipSuspendedEvent
 import org.axonframework.commandhandling.CommandHandler
 import org.axonframework.eventsourcing.EventSourcingHandler
 import org.axonframework.modelling.command.AggregateCreationPolicy
 import org.axonframework.modelling.command.AggregateIdentifier
-import org.axonframework.modelling.command.AggregateLifecycle.apply
+import org.axonframework.modelling.command.AggregateLifecycle
 import org.axonframework.modelling.command.CreationPolicy
 import org.axonframework.spring.stereotype.Aggregate
 
@@ -23,22 +19,22 @@ class Membership() {
     @CommandHandler
     @CreationPolicy(AggregateCreationPolicy.ALWAYS)
     fun activate(cmd: ActivateMembershipCommand) {
-        apply(MembershipActivatedEvent(cmd.membershipId, cmd.customerId))
+        AggregateLifecycle.apply(MembershipActivatedEvent(cmd.membershipId, cmd.customerId))
     }
 
     @CommandHandler
     fun pause(cmd: PauseMembershipCommand) {
-        apply(MembershipPausedEvent(cmd.membershipId))
+        AggregateLifecycle.apply(MembershipPausedEvent(cmd.membershipId))
     }
 
     @CommandHandler
     fun reactivate(cmd: ReactivateMembershipCommand) {
-        apply(MembershipReactivatedEvent(cmd.membershipId))
+        AggregateLifecycle.apply(MembershipReactivatedEvent(cmd.membershipId))
     }
 
     @CommandHandler
     fun suspend(cmd: SuspendMembershipCommand) {
-        apply(MembershipSuspendedEvent(cmd.membershipId))
+        AggregateLifecycle.apply(MembershipSuspendedEvent(cmd.membershipId))
     }
 
     @EventSourcingHandler
