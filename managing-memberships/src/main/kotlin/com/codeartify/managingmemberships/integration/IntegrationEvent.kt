@@ -1,4 +1,4 @@
-package com.codeartify.managingmemberships
+package com.codeartify.managingmemberships.integration
 
 import com.fasterxml.jackson.databind.JsonNode
 
