@@ -1,7 +1,5 @@
-package com.codeartify.managingmemberships.event
+package com.codeartify.managingmemberships.domain
 
-import com.codeartify.managingmemberships.command.CustomerId
-import com.codeartify.managingmemberships.command.MembershipId
 import org.axonframework.serialization.Revision
 
 @Revision("1.0")
