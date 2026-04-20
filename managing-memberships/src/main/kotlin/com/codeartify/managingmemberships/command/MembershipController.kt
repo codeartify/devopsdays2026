@@ -16,26 +16,26 @@ class MembershipController(
 
     @PostMapping("/activate")
     fun activate(): ResponseEntity<String> {
-        val membershipId = UUID.randomUUID().toString()
+        val membershipId = MembershipId(UUID.randomUUID().toString())
         commandGateway.sendAndWait<String>(ActivateMembershipCommand(membershipId))
-        return ResponseEntity.ok(membershipId)
+        return ResponseEntity.ok(membershipId.value)
     }
 
     @PostMapping("/{membershipId}/pause")
     fun pause(@PathVariable membershipId: String): ResponseEntity<Void> {
-        commandGateway.sendAndWait<String>(PauseMembershipCommand(membershipId))
+        commandGateway.sendAndWait<String>(PauseMembershipCommand(MembershipId(membershipId)))
         return ResponseEntity.ok().build()
     }
 
     @PostMapping("/{membershipId}/reactivate")
     fun reactivate(@PathVariable membershipId: String): ResponseEntity<Void> {
-        commandGateway.sendAndWait<String>(ReactivateMembershipCommand(membershipId))
+        commandGateway.sendAndWait<String>(ReactivateMembershipCommand(MembershipId(membershipId)))
         return ResponseEntity.ok().build()
     }
 
     @PostMapping("/{membershipId}/suspend")
     fun suspend(@PathVariable membershipId: String): ResponseEntity<Void> {
-        commandGateway.sendAndWait<String>(SuspendMembershipCommand(membershipId))
+        commandGateway.sendAndWait<String>(SuspendMembershipCommand(MembershipId(membershipId)))
         return ResponseEntity.ok().build()
     }
 }

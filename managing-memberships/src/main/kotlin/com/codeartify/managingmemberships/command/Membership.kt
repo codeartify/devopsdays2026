@@ -16,7 +16,7 @@ import org.axonframework.spring.stereotype.Aggregate
 class Membership() {
 
     @AggregateIdentifier
-    lateinit var membershipId: String
+    lateinit var membershipId: MembershipId
     lateinit var status: MembershipStatus
 
     @CommandHandler
