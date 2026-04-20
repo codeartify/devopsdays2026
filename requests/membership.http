@@ -1,0 +1,16 @@
+### Activate membership
+POST http://localhost:8081/memberships/activate
+Accept: application/json
+
+> {%
+    client.global.set("membershipId", response.body);
+%}
+
+### Pause membership
+POST http://localhost:8081/memberships/{{membershipId}}/pause
+
+### Reactivate membership
+POST http://localhost:8081/memberships/{{membershipId}}/reactivate
+
+### Suspend membership
+POST http://localhost:8081/memberships/{{membershipId}}/suspend
