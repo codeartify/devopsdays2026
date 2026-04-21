@@ -14,12 +14,13 @@ class Membership() {
     @AggregateIdentifier
     lateinit var membershipId: MembershipId
     lateinit var customerId: CustomerId
+    lateinit var planId: PlanId
     lateinit var status: MembershipStatus
 
     @CommandHandler
     @CreationPolicy(AggregateCreationPolicy.ALWAYS)
     fun activate(cmd: ActivateMembershipCommand) {
-        AggregateLifecycle.apply(MembershipActivatedEvent(cmd.membershipId, cmd.customerId))
+        AggregateLifecycle.apply(MembershipActivatedEvent(cmd.membershipId, cmd.customerId, cmd.planId))
     }
 
     @CommandHandler
@@ -41,6 +42,7 @@ class Membership() {
     fun on(evt: MembershipActivatedEvent) {
         membershipId = evt.membershipId
         customerId = evt.customerId
+        planId = evt.planId
         status = MembershipStatus.ACTIVE
     }
 

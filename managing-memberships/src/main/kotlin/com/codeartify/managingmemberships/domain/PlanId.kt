@@ -1,0 +1,20 @@
+package com.codeartify.managingmemberships.domain
+
+import com.fasterxml.jackson.annotation.JsonCreator
+import java.util.UUID
+
+data class PlanId private constructor(val value: String) {
+    companion object {
+        @JsonCreator
+        @JvmStatic
+        fun of(value: String): PlanId {
+            requireNotNull(value) { "Plan ID must not be null" }
+            try {
+                UUID.fromString(value)
+            } catch (e: IllegalArgumentException) {
+                throw IllegalArgumentException("Plan ID must be a valid UUID")
+            }
+            return PlanId(value)
+        }
+    }
+}

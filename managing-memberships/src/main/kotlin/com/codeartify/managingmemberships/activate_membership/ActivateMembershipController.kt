@@ -1,7 +1,7 @@
-package com.codeartify.managingmemberships.command.activate_membership.adapter.presentation
+package com.codeartify.managingmemberships.activate_membership
 
-import com.codeartify.managingmemberships.command.activate_membership.use_case.ActivateMembershipUseCase
 import com.codeartify.managingmemberships.domain.CustomerId
+import com.codeartify.managingmemberships.domain.PlanId
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -17,7 +17,8 @@ class ActivateMembershipController(
     @PostMapping("/activate")
     fun activate(@RequestBody request: ActivateMembershipRequest): ResponseEntity<String> {
         val customerId = CustomerId.of(request.customerId)
-        val membershipId = activateMembershipUseCase.execute(customerId)
+        val planId = PlanId.of(request.planId)
+        val membershipId = activateMembershipUseCase.execute(customerId, planId, request.signedByGuardian)
         return ResponseEntity.ok(membershipId.value)
     }
 

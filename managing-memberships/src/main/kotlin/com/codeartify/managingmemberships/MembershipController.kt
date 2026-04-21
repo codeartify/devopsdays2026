@@ -1,4 +1,4 @@
-package com.codeartify.managingmemberships.command
+package com.codeartify.managingmemberships
 
 import com.codeartify.managingmemberships.domain.MembershipId
 import com.codeartify.managingmemberships.domain.PauseMembershipCommand
@@ -19,7 +19,7 @@ class MembershipController(
 
     @PostMapping("/{membershipId}/pause")
     fun pause(@PathVariable membershipId: String): ResponseEntity<Void> {
-        commandGateway.sendAndWait<String>(PauseMembershipCommand(MembershipId.of(membershipId)))
+        commandGateway.sendAndWait<String>(PauseMembershipCommand(MembershipId.Companion.of(membershipId)))
         return ResponseEntity.ok().build()
     }
 
