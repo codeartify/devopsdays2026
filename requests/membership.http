@@ -4,7 +4,9 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "customerId": "{{customerId}}"
+  "customerId": "{{customerId}}",
+  "planId": "{{planId}}",
+  "signedByGuardian": true
 }
 
 > {%
