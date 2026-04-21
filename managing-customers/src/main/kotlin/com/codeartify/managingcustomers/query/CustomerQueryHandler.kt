@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component
 
 
 @Component
-@ProcessingGroup("customer-query-processing")
+@ProcessingGroup("customer-projection")
 class CustomerQueryHandler(
     private val customerRepository: CustomerRepository,
     private val queryUpdateEmitter: QueryUpdateEmitter
