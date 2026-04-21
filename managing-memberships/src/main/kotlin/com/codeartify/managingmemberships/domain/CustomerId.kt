@@ -1,9 +1,10 @@
 package com.codeartify.managingmemberships.domain
 
 import com.fasterxml.jackson.annotation.JsonCreator
+import com.fasterxml.jackson.annotation.JsonValue
 import java.util.UUID
 
-data class CustomerId private constructor(val value: String) {
+data class CustomerId private constructor(@JsonValue val value: String) {
     companion object {
         @JsonCreator
         @JvmStatic
