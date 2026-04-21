@@ -5,6 +5,7 @@ import org.axonframework.eventsourcing.EventSourcingHandler
 import org.axonframework.modelling.command.AggregateCreationPolicy
 import org.axonframework.modelling.command.AggregateIdentifier
 import org.axonframework.modelling.command.AggregateLifecycle
+import org.axonframework.modelling.command.AggregateLifecycle.apply
 import org.axonframework.modelling.command.CreationPolicy
 import org.axonframework.spring.stereotype.Aggregate
 
@@ -20,22 +21,22 @@ class Membership() {
     @CommandHandler
     @CreationPolicy(AggregateCreationPolicy.ALWAYS)
     fun activate(cmd: ActivateMembershipCommand) {
-        AggregateLifecycle.apply(MembershipActivatedEvent(cmd.membershipId, cmd.customerId, cmd.planId))
+        apply(MembershipActivatedEvent(cmd.membershipId, cmd.customerId, cmd.planId))
     }
 
     @CommandHandler
     fun pause(cmd: PauseMembershipCommand) {
-        AggregateLifecycle.apply(MembershipPausedEvent(cmd.membershipId))
+        apply(MembershipPausedEvent(cmd.membershipId))
     }
 
     @CommandHandler
     fun reactivate(cmd: ReactivateMembershipCommand) {
-        AggregateLifecycle.apply(MembershipReactivatedEvent(cmd.membershipId))
+        apply(MembershipReactivatedEvent(cmd.membershipId))
     }
 
     @CommandHandler
     fun suspend(cmd: SuspendMembershipCommand) {
-        AggregateLifecycle.apply(MembershipSuspendedEvent(cmd.membershipId))
+        apply(MembershipSuspendedEvent(cmd.membershipId))
     }
 
     @EventSourcingHandler
