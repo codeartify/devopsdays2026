@@ -7,6 +7,7 @@ import java.time.LocalDate
 data class CustomerRegisteredIntegrationEventV1(
     val customerId: String,
     val name: String,
+    val email: String,
     @JsonDeserialize(using = LocalDateDeserializer::class)
     val dateOfBirth: LocalDate
 )

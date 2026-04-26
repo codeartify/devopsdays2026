@@ -17,11 +17,14 @@ class CustomerQueryHandler(
 
     @EventHandler
     fun on(evt: CustomerRegisteredEvent) {
-        val customerEntity = customerRepository.save(CustomerEntity(evt.customerId, evt.name, evt.dateOfBirth.toString()))
+        val customerEntity = customerRepository.save(
+            CustomerEntity(evt.customerId, evt.name, evt.email, evt.dateOfBirth.toString())
+        )
 
         val response = CustomerResponse(
             id = customerEntity.id,
             name = customerEntity.name,
+            email = customerEntity.email,
             dateOfBirth = customerEntity.dateOfBirth
         )
 
@@ -37,10 +40,10 @@ class CustomerQueryHandler(
                 CustomerResponse(
                     id = entity.id,
                     name = entity.name,
+                    email = entity.email,
                     dateOfBirth = entity.dateOfBirth
                 )
             }
             .orElse(null)
     }
 }
-

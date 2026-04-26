@@ -16,7 +16,12 @@ class PublishKafkaHandler private constructor(
 
     @EventHandler
     fun publish(event: CustomerRegisteredEvent) {
-        val integrationEvent = CustomerRegisteredIntegrationEventV1(event.customerId, event.name, event.dateOfBirth)
+        val integrationEvent = CustomerRegisteredIntegrationEventV1(
+            event.customerId,
+            event.name,
+            event.email,
+            event.dateOfBirth
+        )
         val envelope = mapOf(
             "type" to "CustomerRegistered",
             "version" to 1,
