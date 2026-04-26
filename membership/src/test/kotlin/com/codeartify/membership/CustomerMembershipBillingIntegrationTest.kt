@@ -14,11 +14,12 @@ import org.springframework.boot.WebApplicationType
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration
 import org.springframework.boot.builder.SpringApplicationBuilder
 import org.springframework.boot.test.context.TestConfiguration
+import org.springframework.boot.web.server.servlet.context.ServletWebServerApplicationContext
 import org.springframework.context.ConfigurableApplicationContext
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Primary
-import org.springframework.boot.web.server.servlet.context.ServletWebServerApplicationContext
+import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.web.client.RestClient
 import org.testcontainers.junit.jupiter.Testcontainers
 import org.testcontainers.kafka.KafkaContainer
@@ -181,6 +182,20 @@ class CustomerMembershipBillingIntegrationTest {
         assertTrue(sentEmail.message.contains("Subject: Your Membership Invoice ${sentEmail.invoiceId}"))
         assertTrue(sentEmail.message.contains("Amount Due: CHF 999"))
         assertTrue(sentEmail.message.contains("Attachment: invoice-${sentEmail.invoiceId}.pdf"))
+
+        val jdbcTemplate = membershipContext.getBean(JdbcTemplate::class.java)
+        awaitUntil("aggregate events stored") {
+            jdbcTemplate.queryForObject(
+                "select count(*) from aggregate_event_entry",
+                Long::class.java
+            )!! > 0
+        }
+        awaitUntil("streaming tokens stored") {
+            jdbcTemplate.queryForObject(
+                "select count(*) from token_entry",
+                Long::class.java
+            )!! > 0
+        }
     }
 
     private fun awaitUntil(description: String, condition: () -> Boolean) {

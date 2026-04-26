@@ -36,14 +36,13 @@ axon:
   eventhandling:
     processors:
       "[com.codeartify.membership.billing]":
-        mode: subscribing
+        mode: pooled
+        source: org.axonframework.eventsourcing.eventstore.EventStore
+      "[com.codeartify.membership.managing_memberships.use_cases.query_memberships]":
+        mode: pooled
         source: org.axonframework.eventsourcing.eventstore.EventStore
       "[com.codeartify.membership.notifying]":
         mode: subscribing
-        source: org.axonframework.eventsourcing.eventstore.EventStore
-      "[com.codeartify.membership.managing_memberships.use_cases.query_memberships]":
-        mode: subscribing
-        source: org.axonframework.eventsourcing.eventstore.EventStore
 
   serializer:
     general: jackson
