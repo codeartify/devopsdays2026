@@ -3,7 +3,7 @@ package com.codeartify.membership.contexts.managingmemberships.application.activ
 import com.codeartify.membership.contexts.customer_cache.CustomerCacheRepository
 import com.codeartify.membership.contexts.customer_cache.CustomerEntity
 import com.codeartify.membership.contexts.managingmemberships.domain.*
-import com.codeartify.membership.contexts.managingmemberships.query_memberships.MembershipRepository
+import com.codeartify.membership.contexts.managingmemberships.use_cases.query_memberships.MembershipRepository
 import org.axonframework.commandhandling.gateway.CommandGateway
 import org.springframework.stereotype.Component
 import java.time.LocalDate

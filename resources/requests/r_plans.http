@@ -55,8 +55,8 @@ Content-Type: application/json
 
 {
   "title": "1 Month Flex",
-  "description": "Flexible monthly membership plan with updated wording.",
-  "price": 139,
+  "description": "Flexible monthly membership plan with updated price.",
+  "price": 150,
   "durationInMonths": 1
 }
 
