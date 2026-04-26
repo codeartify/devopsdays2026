@@ -16,7 +16,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>fitness-management-system</name>
-    <description>Parent POM for Axon Kafka services</description>
+    <description>Parent POM for Fitness Management System</description>
 
     <modules>
         <module>membership</module>
@@ -27,7 +27,7 @@
         <java.version>25</java.version>
         <maven.compiler.source>25</maven.compiler.source>
         <maven.compiler.target>25</maven.compiler.target>
-        <kotlin.version>2.3.10</kotlin.version>
+        <kotlin.version>2.3.21</kotlin.version>
         <kotlin.compiler.jvmTarget>25</kotlin.compiler.jvmTarget>
         <axon.version>5.0.4</axon.version>
         <testcontainers.version>2.0.4</testcontainers.version>

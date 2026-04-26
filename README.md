@@ -1,178 +1,159 @@
-# Event-Sourced DDD with Axon and Kafka — Orders & Customers Demo
+# Event-Sourced DDD with Axon and Kafka
 
-A multi-service event-driven architecture using Event-Sourced DDD Aggregates from the **Axon Framework** with **Kafka** for inter-service event-based communication and **PostgreSQL** for Axon Event Store and Read Model Projections.
-
-## Architecture Overview
-
-![Event Storming - Bounded Contexts](imgs/event-storming.png)
-
-The system is built around two independent bounded contexts:
-
-- **Order Bounded Context** (membership) — Handles order placement and maintains order data
-- **Customer Bounded Context** (identity) — Manages customers and tracks orders they placed
+This repository contains a small multi-service fitness management system built around Event Sourcing, CQRS, and Kafka-based integration.
 
 ## Services
 
-- **membership** — Handles order placement (port 8081)
-- **identity** — Manages customers (port 8082)
-- **Kafka** — Event streaming between services
-- **PostgreSQL** — Two databases: one for orders (port 5434), one for customers (port 5433)
+- `identity` on `http://localhost:8082`
+  - manages customers
+  - persists customer read models in PostgreSQL
+  - publishes customer integration events to Kafka
 
----
+- `membership` on `http://localhost:8081`
+  - manages plans and memberships
+  - stores Axon events and membership projections in PostgreSQL
+  - consumes customer integration events from Kafka
+  - issues billing events when memberships are activated
+  - notifies customers about invoices
 
-## Quick Start
+## Infrastructure
+
+- PostgreSQL for `identity` on port `5433`
+- PostgreSQL for `membership` on port `5434`
+- Kafka on port `9092`
+- Axon Server is not used in this setup
 
 ## Prerequisites
 
-- Java 21
-- Docker & Docker Compose
-- Maven
-- IntelliJ IDEA (recommended for HTTP requests)
+- Java 25
+- Docker and Docker Compose
+- Maven 3.9+
 
-## Running the Application
+## Start The System
 
-### 1. Start Infrastructure
+### 1. Start infrastructure
 
 ```bash
 docker compose up
 ```
 
 This starts:
-- PostgreSQL (customers) on port 5433
-- PostgreSQL (orders) on port 5434
-- Kafka on port 9092
+- `identity-db` on `localhost:5433`
+- `fitness-management-db` on `localhost:5434`
+- Kafka on `localhost:9092`
 
-### 2. Start Services
+### 2. Start the `identity` service
 
-Start the Order Service:
-```bash
-cd membership
-mvn spring-boot:run
-```
+In a new terminal:
 
-Start the Customer Service (in a new terminal):
 ```bash
 cd identity
-mvn spring-boot:run
+./mvnw spring-boot:run
 ```
 
-The services run on:
-- Order Service: http://localhost:8081
-- Customer Service: http://localhost:8082
+### 3. Start the `membership` service
 
-### 3. Test the Application
+In another terminal:
 
-#### Step 1: Register a Customer
+```bash
+cd membership
+./mvnw spring-boot:run
+```
 
-Use `requests/customer.http`:
+## Request Files
+
+The repo already contains IntelliJ HTTP client files under [`resources/requests`](./resources/requests):
+
+- [`r_customer.http`](./resources/requests/r_customer.http)
+- [`r_plans.http`](./resources/requests/r_plans.http)
+- [`r_membership.http`](./resources/requests/r_membership.http)
+- [`http-client.env.json`](./resources/requests/http-client.env.json)
+
+These files store `customerId`, `planId`, and `membershipId` for the next requests.
+
+## Suggested Walkthrough
+
+### 1. Create a customer in `identity`
+
+Use [`r_customer.http`](./resources/requests/r_customer.http):
 
 ```http
-POST http://localhost:8082/customers/register
+POST http://localhost:8082/customers
 Content-Type: application/json
 
 {
-  "name": "Oliver Zihler"
+  "name": "New Member",
+  "dateOfBirth": "1987-08-12",
+  "email": "info@codeartify.com"
 }
 ```
 
-The response will include the customer ID, which is automatically stored in the HTTP client environment (`{{customerId}}`).
+### 2. Create a plan in `membership`
 
-Response:
-```json
-{
-  "id": "e6686671-7de9-45fb-8a02-b449db20dc6e",
-  "name": "Oliver Zihler",
-  "orderIds": []
-}
-```
-
-#### Step 2: Place an Order
-
-Use `requests/orders.http` - the `{{customerId}}` is automatically used from the previous request:
+Use [`r_plans.http`](./resources/requests/r_plans.http):
 
 ```http
-POST http://localhost:8081/orders?customerId={{customerId}}&amount=12.5
-```
+POST http://localhost:8081/plans
+Content-Type: application/json
 
-The order ID is returned and automatically stored as `{{orderId}}`.
-
-The order event will be:
-1. Published to Kafka by Order Service (`OrderPlacedEvent`)
-2. Consumed by Customer Service
-3. Processed as a command to add the order ID to the customer (`AddOrderCommand`)
-4. Stored as an event (`OrderAddedEvent`)
-
-#### Step 3: Get Order Details
-
-Use the GET endpoint in `requests/orders.http`:
-
-```http
-GET http://localhost:8081/orders/{{orderId}}
-```
-
-Response:
-```json
 {
-  "orderId": "4673006b-e505-493e-b28f-243dae359180",
-  "customerId": "e6686671-7de9-45fb-8a02-b449db20dc6e",
-  "amount": 12.5,
-  "title": "Order 12.5"
+  "title": "1 Month",
+  "description": "Flexible monthly membership plan.",
+  "price": 139,
+  "durationInMonths": 1
 }
 ```
 
-#### Step 4: Verify the Customer Data
+### 3. Activate a membership
 
-Use the GET endpoint in `requests/orders.http`:
+Use [`r_membership.http`](./resources/requests/r_membership.http):
 
 ```http
-GET http://localhost:8082/customers/{{customerId}}
-```
+POST http://localhost:8081/memberships/activate
+Content-Type: application/json
 
-Response:
-```json
 {
-  "id": "e6686671-7de9-45fb-8a02-b449db20dc6e",
-  "name": "Oliver Zihler",
-  "orderIds": [
-    "4673006b-e505-493e-b28f-243dae359180"
-  ]
+  "customerId": "{{customerId}}",
+  "planId": "{{planId}}",
+  "signedByGuardian": false
 }
 ```
 
-Note: The customer only stores order IDs. To get full order details (amount, title), query the Order Service using the order ID.
+### 4. Continue the membership lifecycle
 
-## Architecture
+The membership service currently exposes:
 
-### Services
+- `POST /memberships/{membershipId}/pause`
+- `POST /memberships/{membershipId}/reactivate`
+- `POST /memberships/{membershipId}/suspend`
 
-- **Order Service**:
-  - Manages order aggregates using Event Sourcing
-  - Creates orders and publishes `OrderPlacedEvent` to Kafka
-  - Maintains SQL projections with order details (orderId, customerId, amount, title)
-  - Provides REST API to query order details
+The plan management API exposes:
 
-- **Customer Service**:
-  - Manages customer aggregates using Event Sourcing
-  - Consumes order events from Kafka
-  - Stores only order IDs in customer projections (no amount/title duplication)
-  - Maintains SQL projections in PostgreSQL
-  - Provides REST API with subscription queries for eventual consistency
+- `POST /plans`
+- `GET /plans`
+- `PUT /plans/{planId}`
+- `DELETE /plans/{planId}`
 
-### Infrastructure
+The customer API exposes:
 
-- **Kafka**: Event bus for inter-service communication
-- **PostgreSQL**:
-  - Event store (domain_event_entry table)
-  - SQL projections:
-    - Order Service: `orders` table (orderId, customerId, amount, title)
-    - Customer Service: `customers` table + `customer_orders` table (only orderIds)
+- `POST /customers`
+- `GET /customers/{id}`
+- `GET /customers`
+- `PUT /customers/{id}`
+- `DELETE /customers/{id}`
 
-### Key Patterns
+## Data Flow
 
-- **Event Sourcing**: Aggregate state is reconstructed from events
-- **CQRS**: Separate write model (aggregates) and read model (projections)
-- **Subscription Queries**: REST endpoints wait for projections to be updated before returning
-- **Event-Driven Architecture**: Services communicate via Kafka events
-- **Bounded Contexts**: Each service maintains its own projections with different data models
-  - Order Service owns order details (amount, title)
-  - Customer Service only references orders by ID
+At a high level:
+
+1. `identity` creates and updates customers.
+2. Customer changes are published to Kafka on `managing-customer.integration-events.v1`.
+3. `membership` consumes those customer integration events and keeps a local customer cache for membership operations.
+4. `membership` manages plans and membership lifecycle state.
+5. Membership activation triggers downstream billing behavior inside the membership bounded context.
+
+## Notes
+
+- Both services use PostgreSQL for data storage.
+- `membership` uses Axon with PostgreSQL-backed event storage.
+- Kafka is used only for cross-service integration, not as the Axon event store.
