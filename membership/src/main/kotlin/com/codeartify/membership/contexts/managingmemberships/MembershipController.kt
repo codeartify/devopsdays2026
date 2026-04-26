@@ -19,19 +19,19 @@ class MembershipController(
 
     @PostMapping("/{membershipId}/pause")
     fun pause(@PathVariable membershipId: String): ResponseEntity<Void> {
-        commandGateway.sendAndWait<String>(PauseMembershipCommand(MembershipId.Companion.of(membershipId)))
+        commandGateway.sendAndWait<String>(PauseMembershipCommand(MembershipId.of(membershipId)))
         return ResponseEntity.ok().build()
     }
 
     @PostMapping("/{membershipId}/reactivate")
     fun reactivate(@PathVariable membershipId: String): ResponseEntity<Void> {
-        commandGateway.sendAndWait<String>(ReactivateMembershipCommand(MembershipId.Companion.of(membershipId)))
+        commandGateway.sendAndWait<String>(ReactivateMembershipCommand(MembershipId.of(membershipId)))
         return ResponseEntity.ok().build()
     }
 
     @PostMapping("/{membershipId}/suspend")
     fun suspend(@PathVariable membershipId: String): ResponseEntity<Void> {
-        commandGateway.sendAndWait<String>(SuspendMembershipCommand(MembershipId.Companion.of(membershipId)))
+        commandGateway.sendAndWait<String>(SuspendMembershipCommand(MembershipId.of(membershipId)))
         return ResponseEntity.ok().build()
     }
 }
