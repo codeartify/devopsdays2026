@@ -4,8 +4,8 @@ import com.codeartify.membership.contexts.managingmemberships.domain.ActivateMem
 import com.codeartify.membership.contexts.managingmemberships.domain.CustomerId
 import com.codeartify.membership.contexts.managingmemberships.domain.MembershipId
 import com.codeartify.membership.contexts.managingmemberships.domain.PlanId
-import com.codeartify.membership.contexts.managingmemberships.query.CustomerEntity
-import com.codeartify.membership.contexts.managingmemberships.query.CustomerRepository
+import com.codeartify.membership.contexts.customer_cache.CustomerEntity
+import com.codeartify.membership.contexts.customer_cache.CustomerCacheRepository
 import com.codeartify.membership.contexts.managingmemberships.query.MembershipRepository
 import org.axonframework.commandhandling.gateway.CommandGateway
 import org.springframework.stereotype.Component
@@ -14,7 +14,7 @@ import java.time.LocalDate
 @Component
 class ActivateMembershipUseCase(
     private val commandGateway: CommandGateway,
-    private val customerRepository: CustomerRepository,
+    private val customerCacheRepository: CustomerCacheRepository,
     private val membershipRepository: MembershipRepository
 ) {
     fun execute(customerId: CustomerId, planId: PlanId, signedByGuardian: Boolean): MembershipId {
@@ -36,7 +36,7 @@ class ActivateMembershipUseCase(
     }
 
     private fun getCustomerOrThrow(customerId: CustomerId): CustomerEntity =
-        customerRepository.findById(customerId.value)
+        customerCacheRepository.findById(customerId.value)
             .orElseThrow { IllegalArgumentException("Customer with ID ${customerId.value} not found") }
 
     private fun checkNoActiveMembership(customerId: CustomerId) {

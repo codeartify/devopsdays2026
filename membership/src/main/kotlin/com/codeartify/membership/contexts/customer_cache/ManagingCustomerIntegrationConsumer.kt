@@ -1,7 +1,5 @@
-package com.codeartify.membership.contexts.managingmemberships.integration
+package com.codeartify.membership.contexts.customer_cache
 
-import com.codeartify.membership.contexts.managingmemberships.query.CustomerEntity
-import com.codeartify.membership.contexts.managingmemberships.query.CustomerRepository
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.kafka.annotation.KafkaListener
 import org.springframework.stereotype.Component
@@ -9,7 +7,7 @@ import org.springframework.stereotype.Component
 @Component
 class ManagingCustomerIntegrationConsumer(
     private val objectMapper: ObjectMapper,
-    private val customerRepository: CustomerRepository
+    private val customerCacheRepository: CustomerCacheRepository
 ) {
 
     @KafkaListener(topics = ["\${app.kafka.topics.managing-customer}"])
@@ -28,6 +26,6 @@ class ManagingCustomerIntegrationConsumer(
     }
 
     private fun handleCustomerRegistered(event: CustomerRegisteredIntegrationEventV1) {
-        customerRepository.save(CustomerEntity(event.customerId, event.name, event.dateOfBirth))
+        customerCacheRepository.save(CustomerEntity(event.customerId, event.name, event.dateOfBirth))
     }
 }
