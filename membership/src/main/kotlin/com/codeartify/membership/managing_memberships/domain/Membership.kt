@@ -16,7 +16,7 @@ import org.axonframework.extension.spring.stereotype.EventSourced
 import org.axonframework.messaging.commandhandling.annotation.CommandHandler
 import org.axonframework.messaging.eventhandling.gateway.EventAppender
 
-@EventSourced
+@EventSourced(idType = MembershipId::class)
 class Membership {
 
     lateinit var membershipId: MembershipId

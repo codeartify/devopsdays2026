@@ -37,10 +37,8 @@ axon:
     processors:
       "[com.codeartify.membership.billing]":
         mode: pooled
-        source: org.axonframework.eventsourcing.eventstore.EventStore
       "[com.codeartify.membership.managing_memberships.use_cases.query_memberships]":
         mode: pooled
-        source: org.axonframework.eventsourcing.eventstore.EventStore
       "[com.codeartify.membership.notifying]":
         mode: subscribing
 
