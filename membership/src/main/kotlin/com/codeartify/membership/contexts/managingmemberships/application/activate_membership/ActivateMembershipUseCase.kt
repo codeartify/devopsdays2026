@@ -1,4 +1,4 @@
-package com.codeartify.membership.contexts.managingmemberships.activate_membership
+package com.codeartify.membership.contexts.managingmemberships.application.activate_membership
 
 import com.codeartify.membership.contexts.customer_cache.CustomerCacheRepository
 import com.codeartify.membership.contexts.customer_cache.CustomerEntity
