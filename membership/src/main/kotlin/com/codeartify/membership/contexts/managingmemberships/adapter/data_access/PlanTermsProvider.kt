@@ -1,6 +1,6 @@
 package com.codeartify.membership.contexts.managingmemberships.adapter.data_access
 
-import com.codeartify.membership.contexts.managingmemberships.activate_membership.FetchPlanTerms
+import com.codeartify.membership.contexts.managingmemberships.application.activate_membership.FetchPlanTerms
 import com.codeartify.membership.contexts.managingmemberships.domain.PlanDuration
 import com.codeartify.membership.contexts.managingmemberships.domain.PlanId
 import com.codeartify.membership.contexts.managingmemberships.domain.PlanPrice

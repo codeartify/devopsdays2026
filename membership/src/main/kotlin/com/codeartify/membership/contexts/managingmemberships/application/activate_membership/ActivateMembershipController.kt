@@ -1,4 +1,4 @@
-package com.codeartify.membership.contexts.managingmemberships.activate_membership
+package com.codeartify.membership.contexts.managingmemberships.application.activate_membership
 
 import com.codeartify.membership.contexts.managingmemberships.domain.CustomerId
 import com.codeartify.membership.contexts.managingmemberships.domain.PlanId
