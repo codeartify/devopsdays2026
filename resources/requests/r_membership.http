@@ -5,7 +5,7 @@ Accept: application/json
 
 {
   "customerId": "{{customerId}}",
-  "planId": "{{planId}}",
+  "planId": "b55d36e9-b1dc-4d40-9d83-904655303057",
   "signedByGuardian": false
 }
 

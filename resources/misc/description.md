@@ -29,3 +29,7 @@ fitness-management
   * a list of plans sotred by number of times they were selected
   * A list of average per month number of new / reneweed memberships
   * The average time between creation and pausing/suspending/cancelling of a membershiop
+
+Exercises:
+- Upcaster
+- Time-based events (e.g. SuspendMembership (invoice due date))
