@@ -6,6 +6,8 @@ import java.util.UUID
 
 data class PlanId private constructor(@JsonValue val value: String) {
     companion object {
+        fun generate() = PlanId(UUID.randomUUID().toString())
+
         @JsonCreator
         @JvmStatic
         fun of(value: String): PlanId {
