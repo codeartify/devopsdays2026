@@ -1,7 +1,7 @@
-package com.codeartify.membership.contexts.managingmemberships.application.activate_membership
+package com.codeartify.membership.contexts.managingmemberships.use_cases.activate_membership
 
 import com.codeartify.membership.contexts.managingmemberships.domain.CustomerId
-import com.codeartify.membership.contexts.managingmemberships.domain.PlanId
+import com.codeartify.membership.contexts.managingmemberships.domain.values.PlanId
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody

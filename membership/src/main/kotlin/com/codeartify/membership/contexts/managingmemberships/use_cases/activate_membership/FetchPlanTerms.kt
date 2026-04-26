@@ -1,7 +1,7 @@
-package com.codeartify.membership.contexts.managingmemberships.application.activate_membership
+package com.codeartify.membership.contexts.managingmemberships.use_cases.activate_membership
 
-import com.codeartify.membership.contexts.managingmemberships.domain.PlanId
-import com.codeartify.membership.contexts.managingmemberships.domain.PlanTerms
+import com.codeartify.membership.contexts.managingmemberships.domain.values.PlanId
+import com.codeartify.membership.contexts.managingmemberships.domain.values.PlanTerms
 
 interface FetchPlanTerms {
     fun currentTermsFor(planId: PlanId): PlanTerms?

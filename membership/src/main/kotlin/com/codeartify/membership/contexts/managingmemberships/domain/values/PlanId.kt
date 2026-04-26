@@ -1,8 +1,8 @@
-package com.codeartify.membership.contexts.managingmemberships.domain
+package com.codeartify.membership.contexts.managingmemberships.domain.values
 
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonValue
-import java.util.UUID
+import java.util.*
 
 data class PlanId private constructor(@JsonValue val value: String) {
     companion object {
