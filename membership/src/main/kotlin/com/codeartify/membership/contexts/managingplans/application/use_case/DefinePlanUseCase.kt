@@ -1,7 +1,7 @@
 package com.codeartify.membership.contexts.managingplans.application.use_case
 
 import com.codeartify.membership.contexts.managingplans.application.request.CreatePlanRequest
-import com.codeartify.membership.contexts.managingplans.dataaccess.PlanRepository
+import com.codeartify.membership.contexts.managingplans.data_access.PlanRepository
 import com.codeartify.membership.contexts.managingplans.domain.Plan
 import com.codeartify.membership.contexts.managingplans.domain.events.PlanDefinedEvent
 import com.codeartify.membership.contexts.managingplans.domain.values.PlanDescription

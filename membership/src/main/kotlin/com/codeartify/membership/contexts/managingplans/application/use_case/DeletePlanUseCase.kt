@@ -1,6 +1,6 @@
 package com.codeartify.membership.contexts.managingplans.application.use_case
 
-import com.codeartify.membership.contexts.managingplans.dataaccess.PlanRepository
+import com.codeartify.membership.contexts.managingplans.data_access.PlanRepository
 import com.codeartify.membership.contexts.managingplans.domain.events.PlanDeletedEvent
 import com.codeartify.membership.contexts.managingplans.domain.values.PlanId
 import org.axonframework.eventhandling.gateway.EventGateway
