@@ -35,7 +35,7 @@ class ActivateMembershipUseCase(
         )
     }
 
-    private fun getPlanTermsOrThrow(planId: PlanId): PlanTerms = (fetchPlanTerms.fetch(planId)
+    private fun getPlanTermsOrThrow(planId: PlanId): PlanTerms = (fetchPlanTerms.currentTermsFor(planId)
         ?: throw IllegalArgumentException("Plan with ID ${planId.value} not found"))
 
     private fun getCustomerOrThrow(customerId: CustomerId): CustomerEntity =

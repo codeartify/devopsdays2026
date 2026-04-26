@@ -4,5 +4,5 @@ import com.codeartify.membership.contexts.managingmemberships.domain.PlanId
 import com.codeartify.membership.contexts.managingmemberships.domain.PlanTerms
 
 interface FetchPlanTerms {
-    fun fetch(planId: PlanId): PlanTerms?
+    fun currentTermsFor(planId: PlanId): PlanTerms?
 }

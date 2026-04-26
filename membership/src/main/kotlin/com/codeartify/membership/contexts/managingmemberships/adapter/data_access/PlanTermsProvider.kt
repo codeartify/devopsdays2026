@@ -13,7 +13,7 @@ class PlanTermsProvider(
     private val planRepository: PlanRepository
 ) : FetchPlanTerms {
 
-    override fun fetch(planId: PlanId): PlanTerms? =
+    override fun currentTermsFor(planId: PlanId): PlanTerms? =
         planRepository.findById(planId.value)
             .map { plan ->
                 PlanTerms(
