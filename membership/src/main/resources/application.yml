@@ -33,6 +33,18 @@ axon:
   axonserver:
     enabled: false   # no Axon Server
 
+  eventhandling:
+    processors:
+      "[com.codeartify.membership.billing]":
+        mode: subscribing
+        source: org.axonframework.eventsourcing.eventstore.EventStore
+      "[com.codeartify.membership.notifying]":
+        mode: subscribing
+        source: org.axonframework.eventsourcing.eventstore.EventStore
+      "[com.codeartify.membership.managing_memberships.use_cases.query_memberships]":
+        mode: subscribing
+        source: org.axonframework.eventsourcing.eventstore.EventStore
+
   serializer:
     general: jackson
     events: jackson

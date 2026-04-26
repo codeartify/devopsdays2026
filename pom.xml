@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.3</version>
+        <version>4.0.5</version>
         <relativePath/>
     </parent>
 
@@ -29,15 +29,16 @@
         <maven.compiler.target>21</maven.compiler.target>
         <kotlin.version>2.2.0</kotlin.version>
         <kotlin.compiler.jvmTarget>21</kotlin.compiler.jvmTarget>
-        <axon.version>4.11.3</axon.version>
-        <axon-kafka.version>4.12.0</axon-kafka.version>
+        <axon.version>5.0.4</axon.version>
+        <testcontainers.version>2.0.4</testcontainers.version>
+        <docker.compose.skip>false</docker.compose.skip>
     </properties>
 
     <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>org.axonframework</groupId>
-                <artifactId>axon-bom</artifactId>
+                <artifactId>axon-framework-bom</artifactId>
                 <version>${axon.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
@@ -64,7 +65,7 @@
                             <plugin>all-open</plugin>
                         </compilerPlugins>
                         <pluginOptions>
-                            <option>all-open:annotation=org.axonframework.spring.stereotype.Aggregate</option>
+                            <option>all-open:annotation=org.axonframework.extension.spring.stereotype.EventSourced</option>
                         </pluginOptions>
                     </configuration>
                     <dependencies>
@@ -92,6 +93,7 @@
                         <configuration>
                             <composeFile>${maven.multiModuleProjectDirectory}/docker-compose.yml</composeFile>
                             <detachedMode>true</detachedMode>
+                            <skip>${docker.compose.skip}</skip>
                         </configuration>
                     </execution>
                 </executions>

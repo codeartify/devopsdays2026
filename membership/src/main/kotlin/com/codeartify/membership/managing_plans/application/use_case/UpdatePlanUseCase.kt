@@ -8,7 +8,7 @@ import com.codeartify.membership.managing_plans.domain.values.PlanDuration
 import com.codeartify.membership.managing_plans.domain.values.PlanId
 import com.codeartify.membership.managing_plans.domain.values.PlanPrice
 import com.codeartify.membership.managing_plans.domain.values.PlanTitle
-import org.axonframework.eventhandling.gateway.EventGateway
+import org.axonframework.messaging.eventhandling.gateway.EventGateway
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 
@@ -36,12 +36,14 @@ class UpdatePlanUseCase(
         planRepository.save(plan)
 
         eventGateway.publish(
-            PlanUpdatedEvent(
+            listOf(
+                PlanUpdatedEvent(
                 plan.planId,
                 plan.title.value,
                 plan.description.value,
                 plan.price.value,
                 plan.duration.value
+            )
             )
         )
     }
