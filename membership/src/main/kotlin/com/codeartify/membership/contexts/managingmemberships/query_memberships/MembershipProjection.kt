@@ -1,4 +1,4 @@
-package com.codeartify.membership.contexts.managingmemberships.query
+package com.codeartify.membership.contexts.managingmemberships.query_memberships
 
 import com.codeartify.membership.contexts.managingmemberships.domain.MembershipActivatedEvent
 import com.codeartify.membership.contexts.managingmemberships.domain.MembershipPausedEvent

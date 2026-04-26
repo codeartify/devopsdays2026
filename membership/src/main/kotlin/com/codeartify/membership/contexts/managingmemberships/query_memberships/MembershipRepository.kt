@@ -1,4 +1,4 @@
-package com.codeartify.membership.contexts.managingmemberships.query
+package com.codeartify.membership.contexts.managingmemberships.query_memberships
 
 import org.springframework.data.jpa.repository.JpaRepository
 
