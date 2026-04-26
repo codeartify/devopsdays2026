@@ -19,8 +19,8 @@
     <description>Parent POM for Axon Kafka services</description>
 
     <modules>
-        <module>managing-memberships</module>
-        <module>managing-customers</module>
+        <module>membership</module>
+        <module>identity</module>
     </modules>
 
     <properties>
