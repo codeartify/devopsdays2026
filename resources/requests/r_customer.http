@@ -4,8 +4,8 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "name": "Henry Cavill",
-  "dateOfBirth": "1983-05-05",
+  "name": "Oliver Zihler",
+  "dateOfBirth": "1986-08-13",
   "email": "info@codeartify.com"
 }
 > {%
