@@ -1,9 +1,11 @@
 package com.codeartify.membership.managing_memberships.domain.events
 
- import com.codeartify.membership.managing_memberships.domain.MembershipId
- import org.axonframework.serialization.Revision
+import com.codeartify.membership.managing_memberships.domain.MembershipId
+import org.axonframework.eventsourcing.annotation.EventTag
+import org.axonframework.messaging.eventhandling.annotation.Event
 
-@Revision("1.0")
+@Event(version = "1.0")
 data class MembershipPausedEvent(
+    @EventTag(key = "Membership")
     val membershipId: MembershipId
 )

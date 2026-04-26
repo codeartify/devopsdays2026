@@ -2,7 +2,7 @@ package com.codeartify.membership.managing_memberships.use_cases.pause_membershi
 
 import com.codeartify.membership.managing_memberships.domain.MembershipId
 import com.codeartify.membership.managing_memberships.domain.commands.PauseMembershipCommand
-import org.axonframework.commandhandling.gateway.CommandGateway
+import org.axonframework.messaging.commandhandling.gateway.CommandGateway
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -17,7 +17,7 @@ class PauseMembershipController(
 
     @PostMapping("/{membershipId}/pause")
     fun pause(@PathVariable membershipId: String): ResponseEntity<Void> {
-        commandGateway.sendAndWait<String>(PauseMembershipCommand(MembershipId.of(membershipId)))
+        commandGateway.sendAndWait(PauseMembershipCommand(MembershipId.of(membershipId)))
         return ResponseEntity.ok().build()
     }
 

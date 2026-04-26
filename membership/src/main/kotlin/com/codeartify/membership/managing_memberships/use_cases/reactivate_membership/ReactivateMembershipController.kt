@@ -2,7 +2,7 @@ package com.codeartify.membership.managing_memberships.use_cases.reactivate_memb
 
 import com.codeartify.membership.managing_memberships.domain.MembershipId
 import com.codeartify.membership.managing_memberships.domain.commands.ReactivateMembershipCommand
-import org.axonframework.commandhandling.gateway.CommandGateway
+import org.axonframework.messaging.commandhandling.gateway.CommandGateway
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -16,7 +16,7 @@ class ReactivateMembershipController(
 ) {
     @PostMapping("/{membershipId}/reactivate")
     fun reactivate(@PathVariable membershipId: String): ResponseEntity<Void> {
-        commandGateway.sendAndWait<String>(ReactivateMembershipCommand(MembershipId.of(membershipId)))
+        commandGateway.sendAndWait(ReactivateMembershipCommand(MembershipId.of(membershipId)))
         return ResponseEntity.ok().build()
     }
 }

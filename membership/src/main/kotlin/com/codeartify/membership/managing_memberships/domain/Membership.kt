@@ -10,42 +10,52 @@ import com.codeartify.membership.managing_memberships.domain.events.MembershipRe
 import com.codeartify.membership.managing_memberships.domain.events.MembershipSuspendedEvent
 import com.codeartify.membership.managing_memberships.domain.values.MembershipStatus
 import com.codeartify.membership.managing_memberships.domain.values.PlanTerms
-import org.axonframework.commandhandling.CommandHandler
-import org.axonframework.eventsourcing.EventSourcingHandler
-import org.axonframework.modelling.command.AggregateCreationPolicy
-import org.axonframework.modelling.command.AggregateIdentifier
-import org.axonframework.modelling.command.AggregateLifecycle.apply
-import org.axonframework.modelling.command.CreationPolicy
-import org.axonframework.spring.stereotype.Aggregate
+import org.axonframework.eventsourcing.annotation.EventSourcingHandler
+import org.axonframework.eventsourcing.annotation.reflection.EntityCreator
+import org.axonframework.extension.spring.stereotype.EventSourced
+import org.axonframework.messaging.commandhandling.annotation.CommandHandler
+import org.axonframework.messaging.eventhandling.gateway.EventAppender
 
-@Aggregate
-class Membership() {
+@EventSourced
+class Membership {
 
-    @AggregateIdentifier
     lateinit var membershipId: MembershipId
     lateinit var customerId: CustomerId
     lateinit var planTerms: PlanTerms
     lateinit var status: MembershipStatus
 
-    @CommandHandler
-    @CreationPolicy(AggregateCreationPolicy.ALWAYS)
-    fun activate(cmd: ActivateMembershipCommand) {
-        apply(MembershipActivatedEvent(cmd.membershipId, cmd.customerId, cmd.planTerms))
+    @EntityCreator
+    constructor()
+
+    companion object {
+        @JvmStatic
+        @CommandHandler
+        fun activate(cmd: ActivateMembershipCommand, eventAppender: EventAppender): MembershipId {
+            eventAppender.append(
+                MembershipActivatedEvent(
+                    membershipId = cmd.membershipId,
+                    customerId = cmd.customerId,
+                    planTerms = cmd.planTerms
+                )
+            )
+
+            return cmd.membershipId
+        }
     }
 
     @CommandHandler
-    fun pause(cmd: PauseMembershipCommand) {
-        apply(MembershipPausedEvent(cmd.membershipId))
+    fun pause(cmd: PauseMembershipCommand, eventAppender: EventAppender) {
+        eventAppender.append(MembershipPausedEvent(cmd.membershipId))
     }
 
     @CommandHandler
-    fun reactivate(cmd: ReactivateMembershipCommand) {
-        apply(MembershipReactivatedEvent(cmd.membershipId))
+    fun reactivate(cmd: ReactivateMembershipCommand, eventAppender: EventAppender) {
+        eventAppender.append(MembershipReactivatedEvent(cmd.membershipId))
     }
 
     @CommandHandler
-    fun suspend(cmd: SuspendMembershipCommand) {
-        apply(MembershipSuspendedEvent(cmd.membershipId))
+    fun suspend(cmd: SuspendMembershipCommand, eventAppender: EventAppender) {
+        eventAppender.append(MembershipSuspendedEvent(cmd.membershipId))
     }
 
     @EventSourcingHandler

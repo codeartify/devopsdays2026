@@ -8,7 +8,7 @@ import com.codeartify.membership.managing_memberships.domain.values.PlanId
 import com.codeartify.membership.managing_memberships.domain.commands.ActivateMembershipCommand
 import com.codeartify.membership.managing_memberships.domain.values.PlanTerms
 import com.codeartify.membership.managing_memberships.use_cases.query_memberships.MembershipRepository
-import org.axonframework.commandhandling.gateway.CommandGateway
+import org.axonframework.messaging.commandhandling.gateway.CommandGateway
 import org.springframework.stereotype.Component
 import java.time.LocalDate
 
@@ -34,9 +34,7 @@ class ActivateMembershipUseCase(
             signedByGuardian
         )
 
-        return commandGateway.sendAndWait(
-            activateMembershipCommand
-        )
+        return commandGateway.sendAndWait(activateMembershipCommand, MembershipId::class.java)
     }
 
     private fun getPlanTermsOrThrow(planId: PlanId): PlanTerms = (fetchPlanTerms.currentTermsFor(planId)

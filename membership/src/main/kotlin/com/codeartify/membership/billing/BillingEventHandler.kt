@@ -1,13 +1,11 @@
 package com.codeartify.membership.billing
 
 import com.codeartify.membership.managing_memberships.domain.events.MembershipActivatedEvent
-import org.axonframework.config.ProcessingGroup
-import org.axonframework.eventhandling.EventHandler
-import org.axonframework.eventhandling.gateway.EventGateway
+import org.axonframework.messaging.eventhandling.annotation.EventHandler
+import org.axonframework.messaging.eventhandling.gateway.EventGateway
 import org.springframework.stereotype.Component
 
 @Component
-@ProcessingGroup("membership-customer-billing")
 class BillingEventHandler(
     private val invoiceRepository: InvoiceRepository,
     private val eventGateway: EventGateway
@@ -24,12 +22,14 @@ class BillingEventHandler(
         invoiceRepository.save(invoice)
 
         eventGateway.publish(
-            InvoiceIssuedEvent(
+            listOf(
+                InvoiceIssuedEvent(
                 invoiceId = invoice.id,
                 membershipId = event.membershipId,
                 customerId = event.customerId,
                 amount = invoice.amount,
                 dueDate = invoice.dueDate
+            )
             )
         )
     }
