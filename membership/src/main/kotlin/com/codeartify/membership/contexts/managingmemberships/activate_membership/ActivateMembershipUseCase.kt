@@ -6,7 +6,7 @@ import com.codeartify.membership.contexts.managingmemberships.domain.MembershipI
 import com.codeartify.membership.contexts.managingmemberships.domain.PlanId
 import com.codeartify.membership.contexts.customer_cache.CustomerEntity
 import com.codeartify.membership.contexts.customer_cache.CustomerCacheRepository
-import com.codeartify.membership.contexts.managingmemberships.query.MembershipRepository
+import com.codeartify.membership.contexts.managingmemberships.query_memberships.MembershipRepository
 import org.axonframework.commandhandling.gateway.CommandGateway
 import org.springframework.stereotype.Component
 import java.time.LocalDate
