@@ -26,6 +26,6 @@ class ManagingCustomerIntegrationConsumer(
     }
 
     private fun handleCustomerRegistered(event: CustomerRegisteredIntegrationEventV1) {
-        customerCacheRepository.save(CustomerEntity(event.customerId, event.name, event.dateOfBirth))
+        customerCacheRepository.save(CustomerEntity(event.customerId, event.name, event.email, event.dateOfBirth))
     }
 }

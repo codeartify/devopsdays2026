@@ -20,7 +20,7 @@ class CustomerController(
     fun registerCustomer(@RequestBody request: RegisterCustomerRequest): ResponseEntity<String> {
         val customerId = UUID.randomUUID().toString()
 
-        val command = RegisterCustomerCommand(customerId, request.name, request.dateOfBirth)
+        val command = RegisterCustomerCommand(customerId, request.name, request.email, request.dateOfBirth)
 
         commandGateway.sendAndWait<String>(command)
 

@@ -7,5 +7,6 @@ import java.time.LocalDate
 data class CustomerRegisteredEvent(
     val customerId: String,
     val name: String,
+    val email: String,
     val dateOfBirth: LocalDate
 )

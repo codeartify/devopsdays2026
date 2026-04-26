@@ -16,6 +16,7 @@ class Customer() {
     @AggregateIdentifier
     lateinit var customerId: String
     lateinit var name: String
+    lateinit var email: String
     lateinit var dateOfBirth: LocalDate
 
     @CommandHandler
@@ -23,11 +24,13 @@ class Customer() {
    fun register(cmd: RegisterCustomerCommand) {
         require(cmd.customerId.isNotBlank()) { "Customer ID must not be blank" }
         require(cmd.name.isNotBlank()) { "Name must not be blank" }
+        require(cmd.email.isNotBlank()) { "Email must not be blank" }
 
         apply(
             CustomerRegisteredEvent(
                 cmd.customerId,
                 cmd.name,
+                cmd.email,
                 cmd.dateOfBirth
             )
         )
@@ -38,6 +41,7 @@ class Customer() {
     fun on(evt: CustomerRegisteredEvent) {
         customerId = evt.customerId
         name = evt.name
+        email = evt.email
         dateOfBirth = evt.dateOfBirth
     }
 
