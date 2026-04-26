@@ -4,8 +4,9 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "name": "Old enough",
-  "dateOfBirth": "2010-04-19"
+  "name": "Henry Cavill",
+  "dateOfBirth": "1983-05-05",
+  "email": "info@codeartify.com"
 }
 > {%
     client.global.set("customerId", response.body);
