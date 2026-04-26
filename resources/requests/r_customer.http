@@ -1,11 +1,11 @@
-### Register customer
-POST http://localhost:8082/customers/register
+### Create customer
+POST http://localhost:8082/customers
 Content-Type: application/json
 Accept: application/json
 
 {
-  "name": "Oliver Zihler",
-  "dateOfBirth": "1986-08-13",
+  "name": "New Member",
+  "dateOfBirth": "1987-08-12",
   "email": "info@codeartify.com"
 }
 > {%
@@ -14,4 +14,23 @@ Accept: application/json
 
 ### Get customer
 GET http://localhost:8082/customers/{{customerId}}
+Accept: application/json
+
+### Get all customers
+GET http://localhost:8082/customers
+Accept: application/json
+
+### Update customer
+PUT http://localhost:8082/customers/{{customerId}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Oliver Zihler Updated",
+  "dateOfBirth": "1986-08-13",
+  "email": "oliver.updated@codeartify.com"
+}
+
+### Delete customer
+DELETE http://localhost:8082/customers/{{customerId}}
 Accept: application/json
