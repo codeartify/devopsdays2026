@@ -6,6 +6,5 @@ import org.axonframework.serialization.Revision
 data class MembershipActivatedEvent(
     val membershipId: MembershipId,
     val customerId: CustomerId,
-    val planId: PlanId,
     val planTerms: PlanTerms
 )

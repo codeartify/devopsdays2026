@@ -16,7 +16,12 @@ class MembershipProjection(private val membershipRepository: MembershipRepositor
     @EventHandler
     fun on(evt: MembershipActivatedEvent) {
         membershipRepository.save(
-            MembershipEntity(evt.membershipId.value, evt.customerId.value, evt.planId.value, MembershipStatus.ACTIVE.name)
+            MembershipEntity(
+                evt.membershipId.value,
+                evt.customerId.value,
+                evt.planTerms.planId.value,
+                MembershipStatus.ACTIVE.name
+            )
         )
     }
 
