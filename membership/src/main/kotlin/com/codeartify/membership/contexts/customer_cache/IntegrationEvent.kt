@@ -1,4 +1,4 @@
-package com.codeartify.membership.contexts.managingmemberships.integration
+package com.codeartify.membership.contexts.customer_cache
 
 import com.fasterxml.jackson.databind.JsonNode
 
