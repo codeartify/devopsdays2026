@@ -1,12 +1,7 @@
 package com.codeartify.managingcustomers
 
-import com.codeartify.managingcustomers.command.RegisterCustomerRequest
-import com.codeartify.managingcustomers.command.UpdateCustomerRequest
 import com.codeartify.managingcustomers.integration.CustomerPublisher
 import com.codeartify.managingcustomers.integration.CustomerRegisteredIntegrationEventV1
-import com.codeartify.managingcustomers.query.CustomerEntity
-import com.codeartify.managingcustomers.query.CustomerRepository
-import com.codeartify.managingcustomers.query.CustomerResponse
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional

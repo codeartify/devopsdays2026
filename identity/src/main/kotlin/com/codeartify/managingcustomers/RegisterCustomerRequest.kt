@@ -1,4 +1,4 @@
-package com.codeartify.managingcustomers.command
+package com.codeartify.managingcustomers
 
 import java.time.LocalDate
 

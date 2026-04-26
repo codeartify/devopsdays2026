@@ -1,7 +1,5 @@
-package com.codeartify.managingcustomers.command
+package com.codeartify.managingcustomers
 
-import com.codeartify.managingcustomers.CustomerService
-import com.codeartify.managingcustomers.query.CustomerResponse
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping

@@ -1,4 +1,4 @@
-package com.codeartify.managingcustomers.query
+package com.codeartify.managingcustomers
 
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
