@@ -1,0 +1,46 @@
+### Create 1 month plan
+POST http://localhost:8081/plans
+Content-Type: application/json
+
+{
+  "title": "1 Month",
+  "description": "Flexible monthly membership plan.",
+  "price": 139,
+  "durationInMonths": 1
+}
+
+### Create 6 month plan
+POST http://localhost:8081/plans
+Content-Type: application/json
+
+{
+  "title": "6 Months",
+  "description": "Half-year membership plan with better value.",
+  "price": 599,
+  "durationInMonths": 6
+}
+
+### Create 12 month plan
+POST http://localhost:8081/plans
+Content-Type: application/json
+
+{
+  "title": "12 Months",
+  "description": "Annual membership plan.",
+  "price": 999,
+  "durationInMonths": 12
+}
+
+### Create 24 month plan
+POST http://localhost:8081/plans
+Content-Type: application/json
+
+{
+  "title": "24 Months",
+  "description": "Two-year membership plan with the best long-term value.",
+  "price": 1699,
+  "durationInMonths": 24
+}
+
+### Get all plans
+GET http://localhost:8081/plans
