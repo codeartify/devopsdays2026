@@ -4,6 +4,7 @@ app:
   kafka:
     topics:
       managing-customer: managing-customer.integration-events.v1
+
 spring:
   application:
     name: identity
@@ -15,7 +16,7 @@ spring:
     properties:
       spring.json.add.type.headers: false
   datasource:
-    url: jdbc:postgresql://localhost:5433/customers
+    url: jdbc:postgresql://localhost:5433/identity
     username: test
     password: test
   jpa:
