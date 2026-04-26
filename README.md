@@ -1,4 +1,4 @@
-# Event-Sourced DDD with Axon and Kafka
+# Event-Sourced DDD with Axon 
 
 This repository contains a small multi-service fitness management system built around Event Sourcing, CQRS, and Kafka-based integration.
 
