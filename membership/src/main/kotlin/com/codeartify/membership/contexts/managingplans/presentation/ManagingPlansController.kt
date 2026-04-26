@@ -5,7 +5,7 @@ import com.codeartify.membership.contexts.managingplans.application.request.Upda
 import com.codeartify.membership.contexts.managingplans.application.use_case.DefinePlanUseCase
 import com.codeartify.membership.contexts.managingplans.application.use_case.DeletePlanUseCase
 import com.codeartify.membership.contexts.managingplans.application.use_case.UpdatePlanUseCase
-import com.codeartify.membership.contexts.managingplans.dataaccess.PlanRepository
+import com.codeartify.membership.contexts.managingplans.data_access.PlanRepository
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 

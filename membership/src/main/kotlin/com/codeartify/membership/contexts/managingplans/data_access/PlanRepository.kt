@@ -1,4 +1,4 @@
-package com.codeartify.membership.contexts.managingplans.dataaccess
+package com.codeartify.membership.contexts.managingplans.data_access
 
 import com.codeartify.membership.contexts.managingplans.domain.Plan
 import com.codeartify.membership.contexts.managingplans.domain.values.PlanDuration
