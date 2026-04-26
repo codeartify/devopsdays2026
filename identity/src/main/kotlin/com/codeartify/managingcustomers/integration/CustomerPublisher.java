@@ -5,13 +5,13 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
 @Component
-class CustomerPublisher {
+public class CustomerPublisher {
 
     private final KafkaTemplate<String, Object> kafkaTemplate;
     private final String topic;
 
-    CustomerPublisher(KafkaTemplate<String, Object> kafkaTemplate,
-                      @Value("${app.kafka.topics.managing-customer}") String topic) {
+    public CustomerPublisher(KafkaTemplate<String, Object> kafkaTemplate,
+                             @Value("${app.kafka.topics.managing-customer}") String topic) {
         this.kafkaTemplate = kafkaTemplate;
         this.topic = topic;
     }

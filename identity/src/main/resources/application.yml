@@ -29,17 +29,7 @@ spring:
           lob:
             non_contextual_creation: true
 
-axon:
-  axonserver:
-    enabled: false   # no Axon Server
-  serializer:
-    general: jackson
-    events: jackson
-    messages: jackson
-
 logging:
   level:
-    org.axonframework: DEBUG
     com.codeartify: DEBUG
-
 
