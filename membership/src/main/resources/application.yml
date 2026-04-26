@@ -6,7 +6,7 @@ spring:
     name: membership
 
   datasource:
-    url: jdbc:postgresql://localhost:5434/memberships
+    url: jdbc:postgresql://localhost:5434/fitness-management
     username: test
     password: test
   jpa:
