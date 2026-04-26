@@ -7,7 +7,9 @@ import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.Table
 import java.time.LocalDate
-import java.util.UUID
+import java.util.*
+
+private const val GRACE_PERIOD = 30L
 
 @Entity
 @Table(name = "invoices")
@@ -30,7 +32,7 @@ class Invoice() {
             invoice.membershipId = membershipId.value
             invoice.customerId = customerId.value
             invoice.amount = amount.value
-            invoice.dueDate = LocalDate.now().plusDays(30)
+            invoice.dueDate = LocalDate.now().plusDays(GRACE_PERIOD)
             return invoice
         }
     }
