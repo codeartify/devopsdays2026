@@ -1,11 +1,8 @@
 package com.codeartify.membership.contexts.managingmemberships.activate_membership
 
-import com.codeartify.membership.contexts.managingmemberships.domain.ActivateMembershipCommand
-import com.codeartify.membership.contexts.managingmemberships.domain.CustomerId
-import com.codeartify.membership.contexts.managingmemberships.domain.MembershipId
-import com.codeartify.membership.contexts.managingmemberships.domain.PlanId
-import com.codeartify.membership.contexts.customer_cache.CustomerEntity
 import com.codeartify.membership.contexts.customer_cache.CustomerCacheRepository
+import com.codeartify.membership.contexts.customer_cache.CustomerEntity
+import com.codeartify.membership.contexts.managingmemberships.domain.*
 import com.codeartify.membership.contexts.managingmemberships.query_memberships.MembershipRepository
 import org.axonframework.commandhandling.gateway.CommandGateway
 import org.springframework.stereotype.Component
@@ -15,18 +12,21 @@ import java.time.LocalDate
 class ActivateMembershipUseCase(
     private val commandGateway: CommandGateway,
     private val customerCacheRepository: CustomerCacheRepository,
-    private val membershipRepository: MembershipRepository
+    private val membershipRepository: MembershipRepository,
+    private val fetchPlanTerms: FetchPlanTerms
 ) {
     fun execute(customerId: CustomerId, planId: PlanId, signedByGuardian: Boolean): MembershipId {
         val customer = getCustomerOrThrow(customerId)
         checkNoActiveMembership(customerId)
         checkGuardianSignatureIfMinor(customer, signedByGuardian)
 
+        val planTerms = getPlanTermsOrThrow(planId)
         val membershipId = MembershipId.generate()
         val activateMembershipCommand = ActivateMembershipCommand(
             membershipId,
             customerId,
             planId,
+            planTerms,
             signedByGuardian
         )
 
@@ -34,6 +34,9 @@ class ActivateMembershipUseCase(
             activateMembershipCommand
         )
     }
+
+    private fun getPlanTermsOrThrow(planId: PlanId): PlanTerms = (fetchPlanTerms.fetch(planId)
+        ?: throw IllegalArgumentException("Plan with ID ${planId.value} not found"))
 
     private fun getCustomerOrThrow(customerId: CustomerId): CustomerEntity =
         customerCacheRepository.findById(customerId.value)
