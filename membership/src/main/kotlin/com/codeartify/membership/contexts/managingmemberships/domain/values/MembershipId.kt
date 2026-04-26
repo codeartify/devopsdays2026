@@ -2,14 +2,14 @@ package com.codeartify.membership.contexts.managingmemberships.domain
 
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonValue
+import java.util.*
 
-data class PlanPrice private constructor(@JsonValue val value: Int) {
+data class MembershipId private constructor(@JsonValue val value: String) {
     companion object {
+        fun generate() = MembershipId(UUID.randomUUID().toString())
+
         @JsonCreator
         @JvmStatic
-        fun of(value: Int): PlanPrice {
-            require(value > 0) { "Plan price must be greater than zero" }
-            return PlanPrice(value)
-        }
+        fun of(value: String) = MembershipId(value)
     }
 }

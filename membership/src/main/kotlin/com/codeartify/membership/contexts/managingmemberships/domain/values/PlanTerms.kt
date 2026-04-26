@@ -1,4 +1,4 @@
-package com.codeartify.membership.contexts.managingmemberships.domain
+package com.codeartify.membership.contexts.managingmemberships.domain.values
 
 data class PlanTerms(
     val planId: PlanId,

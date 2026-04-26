@@ -1,10 +1,10 @@
 package com.codeartify.membership.contexts.managingmemberships.adapter.data_access
 
-import com.codeartify.membership.contexts.managingmemberships.application.activate_membership.FetchPlanTerms
-import com.codeartify.membership.contexts.managingmemberships.domain.PlanDuration
-import com.codeartify.membership.contexts.managingmemberships.domain.PlanId
-import com.codeartify.membership.contexts.managingmemberships.domain.PlanPrice
-import com.codeartify.membership.contexts.managingmemberships.domain.PlanTerms
+import com.codeartify.membership.contexts.managingmemberships.domain.values.PlanDuration
+import com.codeartify.membership.contexts.managingmemberships.domain.values.PlanId
+import com.codeartify.membership.contexts.managingmemberships.domain.values.PlanPrice
+import com.codeartify.membership.contexts.managingmemberships.domain.values.PlanTerms
+import com.codeartify.membership.contexts.managingmemberships.use_cases.activate_membership.FetchPlanTerms
 import com.codeartify.membership.contexts.managingplans.data_access.PlanRepository
 import org.springframework.stereotype.Component
 

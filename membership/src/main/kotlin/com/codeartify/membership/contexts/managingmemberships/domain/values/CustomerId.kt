@@ -2,7 +2,7 @@ package com.codeartify.membership.contexts.managingmemberships.domain
 
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonValue
-import java.util.UUID
+import java.util.*
 
 data class CustomerId private constructor(@JsonValue val value: String) {
     companion object {

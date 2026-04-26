@@ -1,10 +1,10 @@
 package com.codeartify.membership.contexts.managingmemberships.use_cases.query_memberships
 
-import com.codeartify.membership.contexts.managingmemberships.domain.MembershipActivatedEvent
-import com.codeartify.membership.contexts.managingmemberships.domain.MembershipPausedEvent
-import com.codeartify.membership.contexts.managingmemberships.domain.MembershipReactivatedEvent
-import com.codeartify.membership.contexts.managingmemberships.domain.MembershipStatus
-import com.codeartify.membership.contexts.managingmemberships.domain.MembershipSuspendedEvent
+import com.codeartify.membership.contexts.managingmemberships.domain.events.MembershipPausedEvent
+import com.codeartify.membership.contexts.managingmemberships.domain.events.MembershipReactivatedEvent
+import com.codeartify.membership.contexts.managingmemberships.domain.values.MembershipStatus
+import com.codeartify.membership.contexts.managingmemberships.domain.events.MembershipSuspendedEvent
+import com.codeartify.membership.contexts.managingmemberships.domain.events.MembershipActivatedEvent
 import org.axonframework.config.ProcessingGroup
 import org.axonframework.eventhandling.EventHandler
 import org.springframework.stereotype.Component

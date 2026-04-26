@@ -2,7 +2,7 @@ package com.codeartify.membership.contexts.billing
 
 import com.codeartify.membership.contexts.managingmemberships.domain.CustomerId
 import com.codeartify.membership.contexts.managingmemberships.domain.MembershipId
-import com.codeartify.membership.contexts.managingmemberships.domain.PlanPrice
+import com.codeartify.membership.contexts.managingmemberships.domain.values.PlanPrice
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.Table

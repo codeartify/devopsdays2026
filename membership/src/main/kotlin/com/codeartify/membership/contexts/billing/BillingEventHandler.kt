@@ -1,6 +1,6 @@
 package com.codeartify.membership.contexts.billing
 
-import com.codeartify.membership.contexts.managingmemberships.domain.MembershipActivatedEvent
+import com.codeartify.membership.contexts.managingmemberships.domain.events.MembershipActivatedEvent
 import org.axonframework.config.ProcessingGroup
 import org.axonframework.eventhandling.EventHandler
 import org.axonframework.eventhandling.gateway.EventGateway
