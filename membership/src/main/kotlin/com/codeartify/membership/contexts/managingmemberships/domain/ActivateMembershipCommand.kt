@@ -7,5 +7,6 @@ data class ActivateMembershipCommand(
     val membershipId: MembershipId,
     val customerId: CustomerId,
     val planId: PlanId,
+    val planTerms: PlanTerms,
     val signedByGuardian: Boolean = false
 )
