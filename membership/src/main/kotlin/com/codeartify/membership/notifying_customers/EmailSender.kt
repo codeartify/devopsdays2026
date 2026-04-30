@@ -1,4 +1,4 @@
-package com.codeartify.membership.notifying
+package com.codeartify.membership.notifying_customers
 
 import java.time.LocalDate
 

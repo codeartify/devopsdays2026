@@ -1,7 +1,7 @@
 package com.codeartify.membership
 
 import com.codeartify.membership.customer_cache.CustomerCacheRepository
-import com.codeartify.membership.notifying.EmailSender
+import com.codeartify.membership.notifying_customers.EmailSender
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue

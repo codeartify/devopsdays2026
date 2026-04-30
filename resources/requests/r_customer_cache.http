@@ -1,0 +1,11 @@
+### Backfill customer into membership cache
+POST http://localhost:8081/customer-cache
+Content-Type: application/json
+Accept: application/json
+
+{
+  "id": "{{customerId}}",
+  "name": "New Member",
+  "dateOfBirth": "1987-08-12",
+  "email": "info@codeartify.com"
+}

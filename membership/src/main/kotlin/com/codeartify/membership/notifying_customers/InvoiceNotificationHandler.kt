@@ -1,4 +1,4 @@
-package com.codeartify.membership.notifying
+package com.codeartify.membership.notifying_customers
 
 import com.codeartify.membership.billing.InvoiceIssuedEvent
 import com.codeartify.membership.customer_cache.CustomerCacheRepository
