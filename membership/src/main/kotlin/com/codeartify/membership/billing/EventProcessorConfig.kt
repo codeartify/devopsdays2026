@@ -11,7 +11,7 @@ class EventProcessorConfig {
     fun billingProcessorDefinition(): EventProcessorDefinition =
         EventProcessorDefinition.pooledStreaming("billing")
             .assigningHandlers { descriptor ->
-                descriptor.beanType().packageName == "com.codeartify.membership.billing"
+                descriptor.beanType()?.packageName == "com.codeartify.membership.billing"
             }
             .notCustomized()
 }
