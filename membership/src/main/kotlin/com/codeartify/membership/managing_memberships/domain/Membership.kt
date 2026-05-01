@@ -30,7 +30,7 @@ class Membership {
     companion object {
         @JvmStatic
         @CommandHandler
-        fun activate(cmd: ActivateMembershipCommand, eventAppender: EventAppender) {
+        fun activate(cmd: ActivateMembershipCommand, eventAppender: EventAppender): MembershipId {
             eventAppender.append(
                 MembershipActivatedEvent(
                     membershipId = cmd.membershipId,
@@ -39,6 +39,8 @@ class Membership {
                     customerEligibility = cmd.customerEligibility
                 )
             )
+
+            return cmd.membershipId
         }
 
     }

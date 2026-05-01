@@ -13,6 +13,14 @@ Accept: application/json
     client.global.set("membershipId", response.body);
 %}
 
+### List memberships
+GET http://localhost:8081/memberships
+Accept: application/json
+
+### Get membership by ID
+GET http://localhost:8081/memberships/{{membershipId}}
+Accept: application/json
+
 ### Pause membership
 POST http://localhost:8081/memberships/{{membershipId}}/pause
 Content-Type: application/json

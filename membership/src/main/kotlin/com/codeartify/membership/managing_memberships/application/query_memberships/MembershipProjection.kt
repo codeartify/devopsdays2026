@@ -20,6 +20,10 @@ class MembershipProjection(private val membershipRepository: MembershipRepositor
                 evt.membershipId.value,
                 evt.customerId.value,
                 evt.planTerms.planReferenceId.value,
+                evt.planTerms.duration.value,
+                evt.planTerms.price.value,
+                evt.customerEligibility.dateOfBirth,
+                evt.customerEligibility.guardianSignaturePresent,
                 MembershipStatus.ACTIVE.name
             )
         )
@@ -29,6 +33,9 @@ class MembershipProjection(private val membershipRepository: MembershipRepositor
     fun on(evt: MembershipPausedEvent) {
         membershipRepository.findById(evt.membershipId.value).ifPresent {
             it.status = MembershipStatus.PAUSED.name
+            it.pauseStartDate = evt.pausePeriod.startDate
+            it.pauseEndDate = evt.pausePeriod.endDate
+            it.pauseDurationDays = evt.pausePeriod.durationDays
             membershipRepository.save(it)
         }
     }
@@ -45,6 +52,7 @@ class MembershipProjection(private val membershipRepository: MembershipRepositor
     fun on(evt: MembershipResumedEvent) {
         membershipRepository.findById(evt.membershipId.value).ifPresent {
             it.status = MembershipStatus.ACTIVE.name
+            it.clearPausePeriod()
             membershipRepository.save(it)
         }
     }
@@ -61,7 +69,14 @@ class MembershipProjection(private val membershipRepository: MembershipRepositor
     fun on(evt: MembershipCancelledEvent) {
         membershipRepository.findById(evt.membershipId.value).ifPresent {
             it.status = MembershipStatus.CANCELLED.name
+            it.clearPausePeriod()
             membershipRepository.save(it)
         }
+    }
+
+    private fun MembershipEntity.clearPausePeriod() {
+        pauseStartDate = null
+        pauseEndDate = null
+        pauseDurationDays = null
     }
 }
