@@ -4,6 +4,7 @@ import com.codeartify.membership.customer_cache.CustomerCacheRepository
 import com.codeartify.membership.notifying_customers.EmailSender
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
@@ -190,6 +191,13 @@ class CustomerMembershipBillingIntegrationTest {
                 Long::class.java
             )!! > 0
         }
+        val storedAggregateIdentifier = jdbcTemplate.queryForObject(
+            "select aggregate_identifier from aggregate_event_entry limit 1",
+            String::class.java
+        )!!
+        assertFalse(storedAggregateIdentifier.startsWith("MembershipId("))
+        assertTrue(storedAggregateIdentifier.matches(Regex("[0-9a-fA-F-]{36}")))
+
         awaitUntil("streaming tokens stored") {
             jdbcTemplate.queryForObject(
                 "select count(*) from token_entry",

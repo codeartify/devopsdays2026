@@ -8,7 +8,7 @@ import com.codeartify.membership.managing_memberships.domain.events.MembershipAc
 import com.codeartify.membership.managing_memberships.domain.events.MembershipPausedEvent
 import com.codeartify.membership.managing_memberships.domain.events.MembershipReactivatedEvent
 import com.codeartify.membership.managing_memberships.domain.events.MembershipSuspendedEvent
-import com.codeartify.membership.managing_memberships.domain.values.CustomerEligibilitySnapshot
+import com.codeartify.membership.managing_memberships.domain.values.CustomerEligibility
 import com.codeartify.membership.managing_memberships.domain.values.MembershipStatus
 import com.codeartify.membership.managing_memberships.domain.values.PlanTerms
 import org.axonframework.eventsourcing.annotation.EventSourcingHandler
@@ -16,7 +16,7 @@ import org.axonframework.eventsourcing.annotation.reflection.EntityCreator
 import org.axonframework.extension.spring.stereotype.EventSourced
 import org.axonframework.messaging.commandhandling.annotation.CommandHandler
 import org.axonframework.messaging.eventhandling.gateway.EventAppender
-import java.time.LocalDate
+import java.time.LocalDate.now
 
 @EventSourced(idType = MembershipId::class)
 class Membership {
@@ -25,15 +25,20 @@ class Membership {
     lateinit var customerId: CustomerId
     lateinit var planTerms: PlanTerms
     lateinit var status: MembershipStatus
-    lateinit var customerEligibility: CustomerEligibilitySnapshot
+    lateinit var customerEligibility: CustomerEligibility
 
     @EntityCreator
     constructor()
 
+
     companion object {
         @JvmStatic
         @CommandHandler
-        fun activate(cmd: ActivateMembershipCommand, eventAppender: EventAppender): MembershipId {
+        fun activate(cmd: ActivateMembershipCommand, eventAppender: EventAppender) {
+            if (isUnderage(cmd) && !isGuardianSignaturePresent(cmd)) {
+                throw IllegalStateException("Guardian signature is required for customers under 18")
+            }
+
             eventAppender.append(
                 MembershipActivatedEvent(
                     membershipId = cmd.membershipId,
@@ -42,9 +47,14 @@ class Membership {
                     customerEligibility = cmd.customerEligibility
                 )
             )
-
-            return cmd.membershipId
         }
+
+        private fun isGuardianSignaturePresent(cmd: ActivateMembershipCommand): Boolean =
+            cmd.customerEligibility.guardianSignaturePresent
+
+        private fun isUnderage(cmd: ActivateMembershipCommand): Boolean =
+            cmd.customerEligibility.dateOfBirth.isAfter(now().minusYears(18))
+
     }
 
     @CommandHandler

@@ -2,7 +2,7 @@ package com.codeartify.membership.billing
 
 import com.codeartify.membership.managing_memberships.domain.CustomerId
 import com.codeartify.membership.managing_memberships.domain.MembershipId
-import com.codeartify.membership.managing_memberships.domain.values.PlanPrice
+import com.codeartify.membership.managing_memberships.domain.values.Price
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.Table
@@ -25,7 +25,7 @@ class Invoice() {
         fun issueFor(
             membershipId: MembershipId,
             customerId: CustomerId,
-            amount: PlanPrice
+            amount: Price
         ): Invoice {
             val invoice = Invoice()
             invoice.id = UUID.randomUUID().toString()

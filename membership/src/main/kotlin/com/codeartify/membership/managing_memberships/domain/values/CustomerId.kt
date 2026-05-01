@@ -10,11 +10,6 @@ data class CustomerId private constructor(@JsonValue val value: String) {
         @JvmStatic
         fun of(value: String): CustomerId {
             requireNotNull(value) { "Customer ID must not be null" }
-            try {
-                UUID.fromString(value)
-            } catch (e: IllegalArgumentException) {
-                throw IllegalArgumentException("Customer ID must be a valid UUID")
-            }
             return CustomerId(value)
         }
     }

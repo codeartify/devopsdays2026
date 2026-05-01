@@ -14,7 +14,7 @@ Accept: application/json
 %}
 
 ### Pause membership
-POST http://localhost:8081/memberships/{{membershipId}}/pause
+POST http://localhost:8081/memberships/{{membershipId}}pause
 
 ### Reactivate membership
 POST http://localhost:8081/memberships/{{membershipId}}/reactivate

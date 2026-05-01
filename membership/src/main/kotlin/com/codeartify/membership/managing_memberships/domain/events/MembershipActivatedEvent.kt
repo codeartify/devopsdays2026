@@ -2,7 +2,7 @@ package com.codeartify.membership.managing_memberships.domain.events
 
 import com.codeartify.membership.managing_memberships.domain.CustomerId
 import com.codeartify.membership.managing_memberships.domain.MembershipId
-import com.codeartify.membership.managing_memberships.domain.values.CustomerEligibilitySnapshot
+import com.codeartify.membership.managing_memberships.domain.values.CustomerEligibility
 import com.codeartify.membership.managing_memberships.domain.values.PlanTerms
 import org.axonframework.eventsourcing.annotation.EventTag
 import org.axonframework.messaging.eventhandling.annotation.Event
@@ -13,5 +13,5 @@ data class MembershipActivatedEvent(
     val membershipId: MembershipId,
     val customerId: CustomerId,
     val planTerms: PlanTerms,
-    val customerEligibility: CustomerEligibilitySnapshot
+    val customerEligibility: CustomerEligibility
 )

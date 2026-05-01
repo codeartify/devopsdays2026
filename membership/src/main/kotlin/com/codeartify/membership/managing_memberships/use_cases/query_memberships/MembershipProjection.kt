@@ -17,7 +17,7 @@ class MembershipProjection(private val membershipRepository: MembershipRepositor
             MembershipEntity(
                 evt.membershipId.value,
                 evt.customerId.value,
-                evt.planTerms.planId.value,
+                evt.planTerms.planReferenceId.value,
                 MembershipStatus.ACTIVE.name
             )
         )
