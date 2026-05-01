@@ -8,6 +8,7 @@ import com.codeartify.membership.managing_memberships.domain.events.MembershipAc
 import com.codeartify.membership.managing_memberships.domain.events.MembershipPausedEvent
 import com.codeartify.membership.managing_memberships.domain.events.MembershipReactivatedEvent
 import com.codeartify.membership.managing_memberships.domain.events.MembershipSuspendedEvent
+import com.codeartify.membership.managing_memberships.domain.values.CustomerEligibilitySnapshot
 import com.codeartify.membership.managing_memberships.domain.values.MembershipStatus
 import com.codeartify.membership.managing_memberships.domain.values.PlanTerms
 import org.axonframework.eventsourcing.annotation.EventSourcingHandler
@@ -15,6 +16,7 @@ import org.axonframework.eventsourcing.annotation.reflection.EntityCreator
 import org.axonframework.extension.spring.stereotype.EventSourced
 import org.axonframework.messaging.commandhandling.annotation.CommandHandler
 import org.axonframework.messaging.eventhandling.gateway.EventAppender
+import java.time.LocalDate
 
 @EventSourced(idType = MembershipId::class)
 class Membership {
@@ -23,6 +25,7 @@ class Membership {
     lateinit var customerId: CustomerId
     lateinit var planTerms: PlanTerms
     lateinit var status: MembershipStatus
+    lateinit var customerEligibility: CustomerEligibilitySnapshot
 
     @EntityCreator
     constructor()
@@ -35,7 +38,8 @@ class Membership {
                 MembershipActivatedEvent(
                     membershipId = cmd.membershipId,
                     customerId = cmd.customerId,
-                    planTerms = cmd.planTerms
+                    planTerms = cmd.planTerms,
+                    customerEligibility = cmd.customerEligibility
                 )
             )
 
@@ -63,6 +67,7 @@ class Membership {
         membershipId = evt.membershipId
         customerId = evt.customerId
         planTerms = evt.planTerms
+        customerEligibility = evt.customerEligibility
         status = MembershipStatus.ACTIVE
     }
 
