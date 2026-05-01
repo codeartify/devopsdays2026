@@ -8,6 +8,8 @@ import com.codeartify.membership.managing_memberships.use_cases.activate_members
 import com.codeartify.membership.managing_plans.data_access.PlanRepository
 import org.springframework.stereotype.Component
 
+
+// Adapter to access another bounded context / possibly other system
 @Component
 class PlanTermsProvider(
     private val planRepository: PlanRepository

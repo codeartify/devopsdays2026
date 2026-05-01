@@ -21,7 +21,7 @@ class ActivateMembershipController(
 
         val membershipId = activateMembershipUseCase.execute(customerId, planId, request.signedByGuardian)
 
-        return ResponseEntity.ok(membershipId.value)
+        return ResponseEntity.ok(membershipId?.value)
     }
 
 }

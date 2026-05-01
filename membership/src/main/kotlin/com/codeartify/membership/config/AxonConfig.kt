@@ -1,7 +1,6 @@
-package com.codeartify.membership
+package com.codeartify.membership.config
 
 import jakarta.persistence.EntityManagerFactory
-import org.axonframework.common.configuration.Configuration as AxonConfiguration
 import org.axonframework.eventsourcing.eventstore.AnnotationBasedTagResolver
 import org.axonframework.eventsourcing.eventstore.EventStorageEngine
 import org.axonframework.eventsourcing.eventstore.EventStore
@@ -10,16 +9,16 @@ import org.axonframework.eventsourcing.eventstore.jpa.AggregateBasedJpaEventStor
 import org.axonframework.messaging.commandhandling.CommandBus
 import org.axonframework.messaging.commandhandling.CommandPriorityCalculator
 import org.axonframework.messaging.commandhandling.RoutingStrategy
+import org.axonframework.messaging.commandhandling.gateway.CommandGateway
 import org.axonframework.messaging.commandhandling.gateway.ConvertingCommandGateway
+import org.axonframework.messaging.commandhandling.gateway.DefaultCommandGateway
 import org.axonframework.messaging.core.ClassBasedMessageTypeResolver
 import org.axonframework.messaging.core.MessageTypeResolver
 import org.axonframework.messaging.core.annotation.AnnotationMessageTypeResolver
-import org.axonframework.messaging.commandhandling.gateway.CommandGateway
-import org.axonframework.messaging.commandhandling.gateway.DefaultCommandGateway
 import org.axonframework.messaging.core.conversion.MessageConverter
 import org.axonframework.messaging.core.unitofwork.transaction.jpa.JpaTransactionalExecutorProvider
-import org.axonframework.messaging.eventhandling.conversion.EventConverter
 import org.axonframework.messaging.eventhandling.SimpleEventBus
+import org.axonframework.messaging.eventhandling.conversion.EventConverter
 import org.axonframework.messaging.eventhandling.gateway.DefaultEventGateway
 import org.axonframework.messaging.eventhandling.gateway.EventGateway
 import org.springframework.context.annotation.Bean
@@ -56,7 +55,7 @@ class AxonConfig {
     ): EventGateway = DefaultEventGateway(eventStore, messageTypeResolver)
 
     @Bean
-    fun commandGateway(axonConfiguration: AxonConfiguration): CommandGateway =
+    fun commandGateway(axonConfiguration: org.axonframework.common.configuration.Configuration): CommandGateway =
         ConvertingCommandGateway(
             DefaultCommandGateway(
                 axonConfiguration.getComponent(CommandBus::class.java),

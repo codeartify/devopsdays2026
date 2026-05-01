@@ -1,4 +1,4 @@
-package com.codeartify.membership.managing_memberships.infra
+package com.codeartify.membership.config
 
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ControllerAdvice
