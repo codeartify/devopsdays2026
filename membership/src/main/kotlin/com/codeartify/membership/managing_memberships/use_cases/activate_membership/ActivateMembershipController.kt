@@ -18,7 +18,9 @@ class ActivateMembershipController(
     fun activate(@RequestBody request: ActivateMembershipRequest): ResponseEntity<String> {
         val customerId = CustomerId.of(request.customerId)
         val planId = PlanId.of(request.planId)
+
         val membershipId = activateMembershipUseCase.execute(customerId, planId, request.signedByGuardian)
+
         return ResponseEntity.ok(membershipId.value)
     }
 

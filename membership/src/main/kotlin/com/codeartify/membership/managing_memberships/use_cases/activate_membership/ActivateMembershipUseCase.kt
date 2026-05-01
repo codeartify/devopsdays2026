@@ -34,7 +34,9 @@ class ActivateMembershipUseCase(
             signedByGuardian
         )
 
-        return commandGateway.sendAndWait(activateMembershipCommand, MembershipId::class.java)
+        return requireNotNull(commandGateway.sendAndWait(activateMembershipCommand, MembershipId::class.java)) {
+            "ActivateMembershipCommand completed without returning a membership ID"
+        }
     }
 
     private fun getPlanTermsOrThrow(planId: PlanId): PlanTerms = (fetchPlanTerms.currentTermsFor(planId)
