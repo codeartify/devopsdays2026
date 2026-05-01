@@ -21,8 +21,14 @@ Content-Type: application/json
   "durationInDays": 30
 }
 
-### Reactivate membership
-POST http://localhost:8081/memberships/{{membershipId}}/reactivate
+### Resume membership
+POST http://localhost:8081/memberships/{{membershipId}}/resume
 
 ### Suspend membership
 POST http://localhost:8081/memberships/{{membershipId}}/suspend
+
+### Reactivate membership
+POST http://localhost:8081/memberships/{{membershipId}}/reactivate
+
+### Cancel membership
+DELETE http://localhost:8081/memberships/{{membershipId}}

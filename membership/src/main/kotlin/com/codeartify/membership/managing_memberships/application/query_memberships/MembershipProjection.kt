@@ -1,10 +1,12 @@
 package com.codeartify.membership.managing_memberships.application.query_memberships
 
+import com.codeartify.membership.managing_memberships.domain.events.MembershipActivatedEvent
+import com.codeartify.membership.managing_memberships.domain.events.MembershipCancelledEvent
 import com.codeartify.membership.managing_memberships.domain.events.MembershipPausedEvent
 import com.codeartify.membership.managing_memberships.domain.events.MembershipReactivatedEvent
-import com.codeartify.membership.managing_memberships.domain.values.MembershipStatus
+import com.codeartify.membership.managing_memberships.domain.events.MembershipResumedEvent
 import com.codeartify.membership.managing_memberships.domain.events.MembershipSuspendedEvent
-import com.codeartify.membership.managing_memberships.domain.events.MembershipActivatedEvent
+import com.codeartify.membership.managing_memberships.domain.values.MembershipStatus
 import org.axonframework.messaging.eventhandling.annotation.EventHandler
 import org.springframework.stereotype.Component
 
@@ -40,9 +42,25 @@ class MembershipProjection(private val membershipRepository: MembershipRepositor
     }
 
     @EventHandler
+    fun on(evt: MembershipResumedEvent) {
+        membershipRepository.findById(evt.membershipId.value).ifPresent {
+            it.status = MembershipStatus.ACTIVE.name
+            membershipRepository.save(it)
+        }
+    }
+
+    @EventHandler
     fun on(evt: MembershipSuspendedEvent) {
         membershipRepository.findById(evt.membershipId.value).ifPresent {
             it.status = MembershipStatus.SUSPENDED.name
+            membershipRepository.save(it)
+        }
+    }
+
+    @EventHandler
+    fun on(evt: MembershipCancelledEvent) {
+        membershipRepository.findById(evt.membershipId.value).ifPresent {
+            it.status = MembershipStatus.CANCELLED.name
             membershipRepository.save(it)
         }
     }

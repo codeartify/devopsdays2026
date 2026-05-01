@@ -45,6 +45,7 @@ class Membership {
 
     @CommandHandler
     fun pause(cmd: PauseMembershipCommand, eventAppender: EventAppender) {
+        ensureNotCancelled()
         require (status != MembershipStatus.PAUSED) {
             "Membership is already paused"
         }
@@ -56,6 +57,7 @@ class Membership {
 
     @CommandHandler
     fun suspend(cmd: SuspendMembershipCommand, eventAppender: EventAppender) {
+        ensureNotCancelled()
         require(status == MembershipStatus.ACTIVE) {
             "Only active memberships can be suspended"
         }
@@ -64,6 +66,7 @@ class Membership {
 
     @CommandHandler
     fun resume(cmd: ResumeMembershipCommand, eventAppender: EventAppender) {
+        ensureNotCancelled()
         require(status == MembershipStatus.PAUSED) {
             "Only paused memberships can be resumed"
         }
@@ -73,12 +76,26 @@ class Membership {
 
     @CommandHandler
     fun reactivate(cmd: ReactivateMembershipCommand, eventAppender: EventAppender) {
+        ensureNotCancelled()
         require(status == MembershipStatus.SUSPENDED) {
             "Only suspended memberships can be reactivated"
         }
 
         eventAppender.append(MembershipReactivatedEvent(cmd.membershipId))
     }
+
+    @CommandHandler
+    fun cancel(cmd: CancelMembershipCommand, eventAppender: EventAppender) {
+        ensureNotCancelled()
+        require(status in cancelableStatus()) {
+            "Only active, paused, or suspended memberships can be cancelled"
+        }
+
+        eventAppender.append(MembershipCancelledEvent(cmd.membershipId))
+    }
+
+    private fun cancelableStatus(): Set<MembershipStatus> =
+        setOf(MembershipStatus.ACTIVE, MembershipStatus.PAUSED, MembershipStatus.SUSPENDED)
 
     @EventSourcingHandler
     fun on(evt: MembershipActivatedEvent) {
@@ -111,6 +128,18 @@ class Membership {
     @EventSourcingHandler
     fun on(event: MembershipReactivatedEvent) {
         status = MembershipStatus.ACTIVE
+    }
+
+    @EventSourcingHandler
+    fun on(event: MembershipCancelledEvent) {
+        status = MembershipStatus.CANCELLED
+        pausePeriod = null
+    }
+
+    private fun ensureNotCancelled() {
+        require(status != MembershipStatus.CANCELLED) {
+            "Cancelled memberships are terminal"
+        }
     }
 
 }
