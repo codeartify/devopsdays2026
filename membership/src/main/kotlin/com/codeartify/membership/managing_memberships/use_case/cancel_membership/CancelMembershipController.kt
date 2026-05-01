@@ -1,4 +1,4 @@
-package com.codeartify.membership.managing_memberships.application.cancel_membership
+package com.codeartify.membership.managing_memberships.use_case.cancel_membership
 
 import com.codeartify.membership.managing_memberships.domain.MembershipId
 import com.codeartify.membership.managing_memberships.domain.commands.CancelMembershipCommand

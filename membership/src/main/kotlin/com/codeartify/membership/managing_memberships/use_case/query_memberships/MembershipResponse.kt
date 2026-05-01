@@ -1,4 +1,4 @@
-package com.codeartify.membership.managing_memberships.application.query_memberships
+package com.codeartify.membership.managing_memberships.use_case.query_memberships
 
 import java.time.LocalDate
 

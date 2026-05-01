@@ -1,4 +1,4 @@
-package com.codeartify.membership.managing_memberships.application.activate_membership
+package com.codeartify.membership.managing_memberships.use_case.activate_membership
 
 data class ActivateMembershipRequest(
     val customerId: String,

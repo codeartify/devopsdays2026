@@ -6,7 +6,7 @@ import org.axonframework.messaging.eventhandling.annotation.EventHandler
 import org.springframework.stereotype.Component
 
 @Component
-class InvoiceNotificationHandler(
+class MembershipInvoiceEmailNotificationPolicy(
     private val emailSender: EmailSender,
     private val customerRepository: CustomerCacheRepository
 ) {

@@ -1,4 +1,4 @@
-package com.codeartify.membership.managing_memberships.application.query_memberships
+package com.codeartify.membership.managing_memberships.use_case.query_memberships
 
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping

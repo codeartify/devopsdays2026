@@ -1,4 +1,4 @@
-package com.codeartify.membership.managing_memberships.application.reactivate_membership
+package com.codeartify.membership.managing_memberships.use_case.reactivate_membership
 
 import com.codeartify.membership.managing_memberships.domain.MembershipId
 import com.codeartify.membership.managing_memberships.domain.commands.ReactivateMembershipCommand

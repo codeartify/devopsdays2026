@@ -6,7 +6,7 @@ import org.axonframework.messaging.eventhandling.gateway.EventGateway
 import org.springframework.stereotype.Component
 
 @Component
-class BillingEventHandler(
+class MembershipInvoicePolicy(
     private val invoiceRepository: InvoiceRepository,
     private val eventGateway: EventGateway
 ) {
