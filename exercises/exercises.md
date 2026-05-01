@@ -21,5 +21,13 @@
 ## Add the 
 
 ## Projections
-* Reporting: for each month and year, number of memberships per month activated
+* Growth curve: for each month and year, number of memberships per month activated
 * Send a bonus email for all customers that have ever paused their memberships
+* Categorise members for marketing purposes into 
+  * Motivated (always active, never paused or suspended)
+  * Should be motivated (paused)
+  * Suspicious (> 1 suspended)
+  * Need habit forming (paused > 1)
+  * Those who canceled their membership within 3 months of activation
+* Find month where customers cancel their membership quickly
+

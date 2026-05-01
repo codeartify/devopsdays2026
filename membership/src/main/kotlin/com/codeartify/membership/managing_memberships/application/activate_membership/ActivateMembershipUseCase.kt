@@ -21,8 +21,6 @@ class ActivateMembershipUseCase(
     private val fetchPlanTerms: FetchPlanTerms
 ) {
     fun execute(customerId: CustomerId, planReferenceId: PlanReferenceId, signedByGuardian: Boolean): MembershipId? {
-
-        // customers are eventually consistent - business decision that we tolerate potential inconsistencies
         val customer = getCustomerOrThrow(customerId)
         checkNoActiveMembership(customerId)
         val planTerms = getPlanTermsOrThrow(planReferenceId)
@@ -49,9 +47,11 @@ class ActivateMembershipUseCase(
     private fun getPlanTermsOrThrow(planReferenceId: PlanReferenceId): PlanTerms = (fetchPlanTerms.currentTermsFor(planReferenceId)
         ?: throw IllegalArgumentException("Plan with ID ${planReferenceId.value} not found"))
 
-    private fun getCustomerOrThrow(customerId: CustomerId): CustomerEntity =
-        customerCacheRepository.findById(customerId.value)
+    private fun getCustomerOrThrow(customerId: CustomerId): CustomerEntity {
+        // customers are eventually consistent - business decision that we tolerate potential inconsistencies
+        return customerCacheRepository.findById(customerId.value)
             .orElseThrow { IllegalArgumentException("Customer with ID ${customerId.value} not found") }
+    }
 
     private fun checkNoActiveMembership(customerId: CustomerId) {
         // this is a simplification. With concurrent writes, we'd need to reserve a membership request, and release it if sth fails
