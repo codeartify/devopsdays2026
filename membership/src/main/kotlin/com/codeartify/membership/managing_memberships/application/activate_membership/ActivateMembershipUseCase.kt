@@ -2,6 +2,7 @@ package com.codeartify.membership.managing_memberships.application.activate_memb
 
 import com.codeartify.membership.customer_cache.CustomerCacheRepository
 import com.codeartify.membership.customer_cache.CustomerEntity
+import com.codeartify.membership.managing_memberships.application.query_memberships.MembershipRepository
 import com.codeartify.membership.managing_memberships.domain.CustomerId
 import com.codeartify.membership.managing_memberships.domain.MembershipId
 import com.codeartify.membership.managing_memberships.domain.commands.ActivateMembershipCommand
@@ -9,7 +10,6 @@ import com.codeartify.membership.managing_memberships.domain.values.CustomerElig
 import com.codeartify.membership.managing_memberships.domain.values.MembershipStatus
 import com.codeartify.membership.managing_memberships.domain.values.PlanReferenceId
 import com.codeartify.membership.managing_memberships.domain.values.PlanTerms
-import com.codeartify.membership.managing_memberships.application.query_memberships.MembershipRepository
 import org.axonframework.messaging.commandhandling.gateway.CommandGateway
 import org.springframework.stereotype.Component
 
@@ -23,11 +23,11 @@ class ActivateMembershipUseCase(
     fun execute(customerId: CustomerId, planReferenceId: PlanReferenceId, signedByGuardian: Boolean): MembershipId? {
         val customer = getCustomerOrThrow(customerId)
         checkNoActiveMembership(customerId)
+
         val planTerms = getPlanTermsOrThrow(planReferenceId)
-        val membershipId = MembershipId.generate()
 
         val activateMembershipCommand = ActivateMembershipCommand(
-            membershipId,
+            MembershipId.generate(),
             customerId,
             planTerms,
             customerEligibilityFrom(customer, signedByGuardian)
@@ -36,10 +36,8 @@ class ActivateMembershipUseCase(
         return commandGateway.sendAndWait(activateMembershipCommand, MembershipId::class.java)
     }
 
-    private fun customerEligibilityFrom(
-        customer: CustomerEntity,
-        signedByGuardian: Boolean
-    ): CustomerEligibility = CustomerEligibility(
+    private fun customerEligibilityFrom(customer: CustomerEntity, signedByGuardian: Boolean): CustomerEligibility =
+        CustomerEligibility(
         customer.dateOfBirth,
         signedByGuardian
     )
