@@ -1,4 +1,4 @@
-package com.codeartify.membership
+package com.codeartify.membership.billing
 
 import org.axonframework.extension.spring.config.EventProcessorDefinition
 import org.springframework.context.annotation.Bean
