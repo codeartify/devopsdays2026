@@ -23,12 +23,7 @@ class PauseMembershipController(
         @PathVariable membershipId: String,
         @RequestBody request: PauseMembershipRequest
     ): ResponseEntity<Void> {
-        val startDate = LocalDate.now()
-        val pausePeriod = PausePeriod(
-            startDate = startDate,
-            endDate = startDate.plusDays(request.durationInDays.toLong())
-        )
-
+        val pausePeriod = PausePeriod.from(request.durationInDays)
         commandGateway.sendAndWait(PauseMembershipCommand(MembershipId.of(membershipId), pausePeriod))
         return ResponseEntity.ok().build()
     }

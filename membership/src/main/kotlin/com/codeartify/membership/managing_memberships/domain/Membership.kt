@@ -55,17 +55,15 @@ class Membership {
     }
 
     @CommandHandler
-    fun reactivate(cmd: ReactivateMembershipCommand, eventAppender: EventAppender) {
-        eventAppender.append(MembershipReactivatedEvent(cmd.membershipId))
-    }
-
-    @CommandHandler
     fun suspend(cmd: SuspendMembershipCommand, eventAppender: EventAppender) {
+        require(status == MembershipStatus.ACTIVE) {
+            "Only active memberships can be suspended"
+        }
         eventAppender.append(MembershipSuspendedEvent(cmd.membershipId))
     }
 
     @CommandHandler
-    fun handle(cmd: ResumeMembershipCommand, eventAppender: EventAppender) {
+    fun resume(cmd: ResumeMembershipCommand, eventAppender: EventAppender) {
         require(status == MembershipStatus.PAUSED) {
             "Only paused memberships can be resumed"
         }
@@ -74,7 +72,7 @@ class Membership {
     }
 
     @CommandHandler
-    fun handle(cmd: ReactivateMembershipCommand, eventAppender: EventAppender) {
+    fun reactivate(cmd: ReactivateMembershipCommand, eventAppender: EventAppender) {
         require(status == MembershipStatus.SUSPENDED) {
             "Only suspended memberships can be reactivated"
         }
