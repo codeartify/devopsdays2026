@@ -67,6 +67,7 @@ The repo already contains IntelliJ HTTP client files under [`resources/requests`
 - [`r_customer.http`](./resources/requests/r_customer.http)
 - [`r_plans.http`](./resources/requests/r_plans.http)
 - [`r_membership.http`](./resources/requests/r_membership.http)
+- [`r_customer_cache.http`](./resources/requests/r_customer_cache.http)
 - [`http-client.env.json`](./resources/requests/http-client.env.json)
 
 These files store `customerId`, `planId`, and `membershipId` for the next requests.
@@ -119,28 +120,192 @@ Content-Type: application/json
 }
 ```
 
-### 4. Continue the membership lifecycle
+### 4. Query the membership projection
 
-The membership service currently exposes:
+Membership read endpoints return the flat projection stored in PostgreSQL:
 
-- `POST /memberships/{membershipId}/pause`
-- `POST /memberships/{membershipId}/reactivate`
-- `POST /memberships/{membershipId}/suspend`
+```http
+GET http://localhost:8081/memberships
+Accept: application/json
+```
 
-The plan management API exposes:
+```http
+GET http://localhost:8081/memberships/{{membershipId}}
+Accept: application/json
+```
 
-- `POST /plans`
-- `GET /plans`
-- `PUT /plans/{planId}`
-- `DELETE /plans/{planId}`
+Example response:
 
-The customer API exposes:
+```json
+{
+  "id": "b84333b2-5ed9-4488-a0d7-edee5110bc20",
+  "customerId": "customer-1",
+  "planId": "b82a8402-0a42-463a-ad46-096804c25e53",
+  "planDuration": 6,
+  "planPrice": 599,
+  "customerDateOfBirth": "1987-08-12",
+  "guardianSignaturePresent": false,
+  "status": "ACTIVE",
+  "pauseStartDate": null,
+  "pauseEndDate": null,
+  "pauseDurationDays": null
+}
+```
 
-- `POST /customers`
-- `GET /customers/{id}`
-- `GET /customers`
-- `PUT /customers/{id}`
-- `DELETE /customers/{id}`
+### 5. Continue the membership lifecycle
+
+Pause an active membership:
+
+```http
+POST http://localhost:8081/memberships/{{membershipId}}/pause
+Content-Type: application/json
+
+{
+  "durationInDays": 30
+}
+```
+
+Resume a paused membership:
+
+```http
+POST http://localhost:8081/memberships/{{membershipId}}/resume
+```
+
+Suspend an active membership:
+
+```http
+POST http://localhost:8081/memberships/{{membershipId}}/suspend
+```
+
+Reactivate a suspended membership:
+
+```http
+POST http://localhost:8081/memberships/{{membershipId}}/reactivate
+```
+
+Cancel an active, paused, or suspended membership:
+
+```http
+DELETE http://localhost:8081/memberships/{{membershipId}}
+```
+
+## API Reference
+
+### Customer API (`identity`, port `8082`)
+
+| Method | Path | Description |
+|---|---|---|
+| `POST` | `/customers` | Create a customer and publish a customer integration event |
+| `GET` | `/customers` | List customers |
+| `GET` | `/customers/{id}` | Get one customer |
+| `PUT` | `/customers/{id}` | Update a customer and publish a customer integration event |
+| `DELETE` | `/customers/{id}` | Delete a customer |
+
+Create/update request body:
+
+```json
+{
+  "name": "New Member",
+  "dateOfBirth": "1987-08-12",
+  "email": "info@codeartify.com"
+}
+```
+
+### Plan API (`membership`, port `8081`)
+
+| Method | Path | Description |
+|---|---|---|
+| `POST` | `/plans` | Create a plan |
+| `GET` | `/plans` | List plans ordered by duration |
+| `PUT` | `/plans/{planId}` | Update a plan |
+| `DELETE` | `/plans/{planId}` | Delete a plan |
+
+Create/update request body:
+
+```json
+{
+  "title": "6 Months",
+  "description": "Half-year membership plan with better value.",
+  "price": 599,
+  "durationInMonths": 6
+}
+```
+
+Plan response:
+
+```json
+{
+  "id": "b82a8402-0a42-463a-ad46-096804c25e53",
+  "title": "6 Months",
+  "description": "Half-year membership plan with better value.",
+  "price": 599,
+  "durationInMonths": 6
+}
+```
+
+### Membership API (`membership`, port `8081`)
+
+| Method | Path | Description |
+|---|---|---|
+| `POST` | `/memberships/activate` | Activate a membership |
+| `GET` | `/memberships` | List flat membership projections |
+| `GET` | `/memberships/{membershipId}` | Get one flat membership projection |
+| `POST` | `/memberships/{membershipId}/pause` | Pause an active membership |
+| `POST` | `/memberships/{membershipId}/resume` | Resume a paused membership |
+| `POST` | `/memberships/{membershipId}/suspend` | Suspend an active membership |
+| `POST` | `/memberships/{membershipId}/reactivate` | Reactivate a suspended membership |
+| `DELETE` | `/memberships/{membershipId}` | Cancel an active, paused, or suspended membership |
+
+Activation request body:
+
+```json
+{
+  "customerId": "{{customerId}}",
+  "planId": "{{planId}}",
+  "signedByGuardian": false
+}
+```
+
+Pause request body:
+
+```json
+{
+  "durationInDays": 30
+}
+```
+
+### Customer Cache API (`membership`, port `8081`)
+
+This endpoint is useful when running `membership` without replaying customer events from `identity`.
+
+| Method | Path | Description |
+|---|---|---|
+| `POST` | `/customer-cache` | Backfill one customer into the membership service customer cache |
+
+Request body:
+
+```json
+{
+  "id": "{{customerId}}",
+  "name": "New Member",
+  "dateOfBirth": "1987-08-12",
+  "email": "info@codeartify.com"
+}
+```
+
+## Membership Lifecycle
+
+| From State | Command | Event | To State | Rule / Invariant |
+|---|---|---|---|---|
+| none | `ActivateMembership` | `MembershipActivated` | `ACTIVE` | Customer is eligible; plan terms are known; membership does not already exist |
+| `ACTIVE` | `PauseMembership` | `MembershipPaused` | `PAUSED` | Only active memberships can be paused; pause duration must be between 30 and 60 days |
+| `PAUSED` | `ResumeMembership` | `MembershipResumed` | `ACTIVE` | Only paused memberships can be resumed |
+| `ACTIVE` | `SuspendMembership` | `MembershipSuspended` | `SUSPENDED` | Only active memberships can be suspended |
+| `SUSPENDED` | `ReactivateMembership` | `MembershipReactivated` | `ACTIVE` | Only suspended memberships can be reactivated |
+| `ACTIVE` | `CancelMembership` | `MembershipCancelled` | `CANCELLED` | Active memberships can be cancelled |
+| `PAUSED` | `CancelMembership` | `MembershipCancelled` | `CANCELLED` | Paused memberships can be cancelled |
+| `SUSPENDED` | `CancelMembership` | `MembershipCancelled` | `CANCELLED` | Suspended memberships can be cancelled |
+| `CANCELLED` | any transition command | rejected | `CANCELLED` | Cancelled is terminal |
 
 ## Data Flow
 
