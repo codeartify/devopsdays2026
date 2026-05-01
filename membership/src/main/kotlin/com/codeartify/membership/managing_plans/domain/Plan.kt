@@ -1,14 +1,5 @@
 package com.codeartify.membership.managing_plans.domain
 
-import com.codeartify.membership.managing_plans.domain.values.PlanDescription
-import com.codeartify.membership.managing_plans.domain.values.PlanDescriptionConverter
-import com.codeartify.membership.managing_plans.domain.values.PlanDuration
-import com.codeartify.membership.managing_plans.domain.values.PlanDurationConverter
-import com.codeartify.membership.managing_plans.domain.values.PlanId
-import com.codeartify.membership.managing_plans.domain.values.PlanPrice
-import com.codeartify.membership.managing_plans.domain.values.PlanPriceConverter
-import com.codeartify.membership.managing_plans.domain.values.PlanTitle
-import com.codeartify.membership.managing_plans.domain.values.PlanTitleConverter
 import jakarta.persistence.Convert
 import jakarta.persistence.Entity
 import jakarta.persistence.Id

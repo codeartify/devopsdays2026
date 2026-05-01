@@ -4,7 +4,7 @@ import com.codeartify.membership.managing_memberships.domain.values.Duration
 import com.codeartify.membership.managing_memberships.domain.values.PlanReferenceId
 import com.codeartify.membership.managing_memberships.domain.values.Price
 import com.codeartify.membership.managing_memberships.domain.values.PlanTerms
-import com.codeartify.membership.managing_memberships.use_cases.activate_membership.FetchPlanTerms
+import com.codeartify.membership.managing_memberships.application.activate_membership.FetchPlanTerms
 import com.codeartify.membership.managing_plans.data_access.PlanRepository
 import org.springframework.stereotype.Component
 

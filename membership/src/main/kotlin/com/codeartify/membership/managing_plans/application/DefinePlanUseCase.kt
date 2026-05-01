@@ -1,14 +1,13 @@
-package com.codeartify.membership.managing_plans.application.use_case
+package com.codeartify.membership.managing_plans.application
 
-import com.codeartify.membership.managing_plans.application.request.CreatePlanRequest
 import com.codeartify.membership.managing_plans.data_access.PlanRepository
 import com.codeartify.membership.managing_plans.domain.Plan
-import com.codeartify.membership.managing_plans.domain.events.PlanDefinedEvent
-import com.codeartify.membership.managing_plans.domain.values.PlanDescription
-import com.codeartify.membership.managing_plans.domain.values.PlanDuration
-import com.codeartify.membership.managing_plans.domain.values.PlanId
-import com.codeartify.membership.managing_plans.domain.values.PlanPrice
-import com.codeartify.membership.managing_plans.domain.values.PlanTitle
+import com.codeartify.membership.managing_plans.domain.PlanDefinedEvent
+import com.codeartify.membership.managing_plans.domain.PlanDescription
+import com.codeartify.membership.managing_plans.domain.PlanDuration
+import com.codeartify.membership.managing_plans.domain.PlanId
+import com.codeartify.membership.managing_plans.domain.PlanPrice
+import com.codeartify.membership.managing_plans.domain.PlanTitle
 import org.axonframework.messaging.eventhandling.gateway.EventGateway
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional

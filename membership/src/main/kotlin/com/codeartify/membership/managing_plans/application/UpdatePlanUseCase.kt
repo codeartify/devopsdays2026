@@ -1,9 +1,12 @@
-package com.codeartify.membership.managing_plans.application.use_case
+package com.codeartify.membership.managing_plans.application
 
-import com.codeartify.membership.managing_plans.application.request.UpdatePlanRequest
 import com.codeartify.membership.managing_plans.data_access.PlanRepository
-import com.codeartify.membership.managing_plans.domain.events.PlanUpdatedEvent
-import com.codeartify.membership.managing_plans.domain.values.*
+import com.codeartify.membership.managing_plans.domain.PlanDescription
+import com.codeartify.membership.managing_plans.domain.PlanDuration
+import com.codeartify.membership.managing_plans.domain.PlanId
+import com.codeartify.membership.managing_plans.domain.PlanPrice
+import com.codeartify.membership.managing_plans.domain.PlanTitle
+import com.codeartify.membership.managing_plans.domain.PlanUpdatedEvent
 import org.axonframework.messaging.eventhandling.gateway.EventGateway
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional

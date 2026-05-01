@@ -1,4 +1,4 @@
-package com.codeartify.membership.managing_memberships.use_cases.query_memberships
+package com.codeartify.membership.managing_memberships.application.query_memberships
 
 import com.codeartify.membership.managing_memberships.domain.events.MembershipPausedEvent
 import com.codeartify.membership.managing_memberships.domain.events.MembershipReactivatedEvent

@@ -1,7 +1,7 @@
-package com.codeartify.membership.managing_memberships.use_cases.suspend_membership
+package com.codeartify.membership.managing_memberships.application.reactivate_membership
 
 import com.codeartify.membership.managing_memberships.domain.MembershipId
-import com.codeartify.membership.managing_memberships.domain.commands.SuspendMembershipCommand
+import com.codeartify.membership.managing_memberships.domain.commands.ReactivateMembershipCommand
 import org.axonframework.messaging.commandhandling.gateway.CommandGateway
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PathVariable
@@ -11,13 +11,12 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/memberships")
-class SuspendMembershipController(
+class ReactivateMembershipController(
     private val commandGateway: CommandGateway
 ) {
-
-    @PostMapping("/{membershipId}/suspend")
-    fun suspend(@PathVariable membershipId: String): ResponseEntity<Void> {
-        commandGateway.sendAndWait(SuspendMembershipCommand(MembershipId.of(membershipId)))
+    @PostMapping("/{membershipId}/reactivate")
+    fun reactivate(@PathVariable membershipId: String): ResponseEntity<Void> {
+        commandGateway.sendAndWait(ReactivateMembershipCommand(MembershipId.of(membershipId)))
         return ResponseEntity.ok().build()
     }
 }

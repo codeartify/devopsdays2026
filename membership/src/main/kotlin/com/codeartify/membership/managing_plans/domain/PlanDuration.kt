@@ -1,4 +1,4 @@
-package com.codeartify.membership.managing_plans.domain.values
+package com.codeartify.membership.managing_plans.domain
 
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonValue

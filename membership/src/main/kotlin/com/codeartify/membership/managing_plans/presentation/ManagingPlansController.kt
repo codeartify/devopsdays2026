@@ -1,13 +1,20 @@
 package com.codeartify.membership.managing_plans.presentation
 
-import com.codeartify.membership.managing_plans.application.request.CreatePlanRequest
-import com.codeartify.membership.managing_plans.application.request.UpdatePlanRequest
-import com.codeartify.membership.managing_plans.application.use_case.DefinePlanUseCase
-import com.codeartify.membership.managing_plans.application.use_case.DeletePlanUseCase
-import com.codeartify.membership.managing_plans.application.use_case.UpdatePlanUseCase
+import com.codeartify.membership.managing_plans.application.CreatePlanRequest
+import com.codeartify.membership.managing_plans.application.DefinePlanUseCase
+import com.codeartify.membership.managing_plans.application.DeletePlanUseCase
+import com.codeartify.membership.managing_plans.application.UpdatePlanUseCase
+import com.codeartify.membership.managing_plans.application.UpdatePlanRequest
 import com.codeartify.membership.managing_plans.data_access.PlanRepository
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/plans")

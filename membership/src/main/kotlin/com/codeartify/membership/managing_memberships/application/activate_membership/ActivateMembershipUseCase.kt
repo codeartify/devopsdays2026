@@ -1,4 +1,4 @@
-package com.codeartify.membership.managing_memberships.use_cases.activate_membership
+package com.codeartify.membership.managing_memberships.application.activate_membership
 
 import com.codeartify.membership.customer_cache.CustomerCacheRepository
 import com.codeartify.membership.customer_cache.CustomerEntity
@@ -9,7 +9,7 @@ import com.codeartify.membership.managing_memberships.domain.values.CustomerElig
 import com.codeartify.membership.managing_memberships.domain.values.MembershipStatus
 import com.codeartify.membership.managing_memberships.domain.values.PlanReferenceId
 import com.codeartify.membership.managing_memberships.domain.values.PlanTerms
-import com.codeartify.membership.managing_memberships.use_cases.query_memberships.MembershipRepository
+import com.codeartify.membership.managing_memberships.application.query_memberships.MembershipRepository
 import org.axonframework.messaging.commandhandling.gateway.CommandGateway
 import org.springframework.stereotype.Component
 

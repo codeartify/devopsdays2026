@@ -1,6 +1,6 @@
-package com.codeartify.membership.managing_plans.application.request
+package com.codeartify.membership.managing_plans.application
 
-data class UpdatePlanRequest(
+data class CreatePlanRequest(
     val title: String,
     val description: String,
     val price: Int,

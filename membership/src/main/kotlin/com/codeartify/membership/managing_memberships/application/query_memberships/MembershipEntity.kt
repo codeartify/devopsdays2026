@@ -1,4 +1,4 @@
-package com.codeartify.membership.managing_memberships.use_cases.query_memberships
+package com.codeartify.membership.managing_memberships.application.query_memberships
 
 import jakarta.persistence.Entity
 import jakarta.persistence.Id

@@ -1,6 +1,5 @@
-package com.codeartify.membership.managing_plans.domain.events
+package com.codeartify.membership.managing_plans.domain
 
-import com.codeartify.membership.managing_plans.domain.values.PlanId
 import org.axonframework.messaging.eventhandling.annotation.Event
 
 @Event(version = "1.0")

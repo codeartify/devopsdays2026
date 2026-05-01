@@ -1,8 +1,8 @@
-package com.codeartify.membership.managing_plans.application.use_case
+package com.codeartify.membership.managing_plans.application
 
 import com.codeartify.membership.managing_plans.data_access.PlanRepository
-import com.codeartify.membership.managing_plans.domain.events.PlanDeletedEvent
-import com.codeartify.membership.managing_plans.domain.values.PlanId
+import com.codeartify.membership.managing_plans.domain.PlanDeletedEvent
+import com.codeartify.membership.managing_plans.domain.PlanId
 import org.axonframework.messaging.eventhandling.gateway.EventGateway
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional

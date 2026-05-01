@@ -1,4 +1,4 @@
-package com.codeartify.membership.managing_memberships.use_cases.activate_membership
+package com.codeartify.membership.managing_memberships.application.activate_membership
 
 import com.codeartify.membership.managing_memberships.domain.CustomerId
 import com.codeartify.membership.managing_memberships.domain.values.PlanReferenceId
