@@ -19,7 +19,7 @@ class ActivateMembershipUseCase(
     private val membershipRepository: MembershipRepository,
     private val fetchPlanTerms: FetchPlanTerms
 ) {
-    fun execute(customerId: CustomerId, planId: PlanId, signedByGuardian: Boolean): MembershipId {
+    fun execute(customerId: CustomerId, planId: PlanId, signedByGuardian: Boolean): MembershipId? {
         val customer = getCustomerOrThrow(customerId)
         checkNoActiveMembership(customerId)
         checkGuardianSignatureIfMinor(customer, signedByGuardian)
@@ -34,10 +34,7 @@ class ActivateMembershipUseCase(
             signedByGuardian
         )
 
-        return requireNotNull(commandGateway.sendAndWait(activateMembershipCommand, MembershipId::class.java)) {
-            "ActivateMembershipCommand completed without returning a membership ID"
-        }
-    }
+        return commandGateway.sendAndWait(activateMembershipCommand, MembershipId::class.java)    }
 
     private fun getPlanTermsOrThrow(planId: PlanId): PlanTerms = (fetchPlanTerms.currentTermsFor(planId)
         ?: throw IllegalArgumentException("Plan with ID ${planId.value} not found"))
