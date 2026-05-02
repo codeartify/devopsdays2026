@@ -3,12 +3,18 @@ package com.codeartify.membership.managing_memberships.domain.values
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 
+private fun LocalDate.isInTheFuture(): Boolean =
+    !isBefore(LocalDate.now())
+
 data class PausePeriod(
     val startDate: LocalDate,
     val endDate: LocalDate
 ) {
     init {
-        require(!endDate.isBefore(startDate)) {
+        require(startDate.isInTheFuture()) {
+            "Pause start date must be in the future"
+        }
+        require(endDate.isAfter(startDate)) {
             "Pause end date must not be before start date"
         }
         require(durationDays in 30..60) {

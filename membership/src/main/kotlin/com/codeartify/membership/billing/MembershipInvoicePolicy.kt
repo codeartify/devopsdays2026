@@ -24,12 +24,12 @@ class MembershipInvoicePolicy(
         eventGateway.publish(
             listOf(
                 InvoiceIssuedEvent(
-                invoiceId = invoice.id,
-                membershipId = event.membershipId,
-                customerId = event.customerId,
-                amount = invoice.amount,
-                dueDate = invoice.dueDate
-            )
+                    invoiceId = invoice.id,
+                    membershipId = event.membershipId,
+                    customerId = event.customerId,
+                    amount = invoice.amount,
+                    dueDate = invoice.dueDate
+                )
             )
         )
     }

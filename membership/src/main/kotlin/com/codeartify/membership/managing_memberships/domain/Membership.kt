@@ -22,10 +22,8 @@ class Membership {
     private lateinit var customerEligibility: CustomerEligibility
     private var pausePeriod: PausePeriod? = null
 
-
     @EntityCreator
     constructor()
-
 
     companion object {
         @JvmStatic
@@ -47,6 +45,7 @@ class Membership {
 
     @CommandHandler
     fun pause(cmd: PauseMembershipCommand, eventAppender: EventAppender) {
+        // makes terminal state rule "cancelled" explicit when calling Membership.
         ensureNotCancelled()
         require (status != MembershipStatus.PAUSED) {
             "Membership is already paused"

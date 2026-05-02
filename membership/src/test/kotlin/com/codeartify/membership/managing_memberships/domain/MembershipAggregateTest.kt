@@ -44,9 +44,10 @@ class MembershipAggregateTest {
         dateOfBirth = LocalDate.of(1990, 1, 1),
         guardianSignaturePresent = false
     )
+    private val pauseStartDate = LocalDate.now().plusDays(1)
     private val pausePeriod = PausePeriod(
-        startDate = LocalDate.of(2026, 5, 1),
-        endDate = LocalDate.of(2026, 5, 31)
+        startDate = pauseStartDate,
+        endDate = pauseStartDate.plusDays(30)
     )
 
     @BeforeEach
@@ -197,9 +198,10 @@ class MembershipAggregateTest {
 
     companion object {
         private val cancelledMembershipId = MembershipId.of("b84333b2-5ed9-4488-a0d7-edee5110bc20")
+        private val cancelledPauseStartDate = LocalDate.now().plusDays(1)
         private val cancelledPausePeriod = PausePeriod(
-            startDate = LocalDate.of(2026, 5, 1),
-            endDate = LocalDate.of(2026, 5, 31)
+            startDate = cancelledPauseStartDate,
+            endDate = cancelledPauseStartDate.plusDays(30)
         )
 
         @JvmStatic
