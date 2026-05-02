@@ -4,6 +4,7 @@ import com.codeartify.membership.managing_memberships.domain.commands.*
 import com.codeartify.membership.managing_memberships.domain.events.*
 import com.codeartify.membership.managing_memberships.domain.values.CustomerEligibility
 import com.codeartify.membership.managing_memberships.domain.values.MembershipStatus
+import com.codeartify.membership.managing_memberships.domain.values.MembershipStatus.ACTIVE
 import com.codeartify.membership.managing_memberships.domain.values.PausePeriod
 import com.codeartify.membership.managing_memberships.domain.values.PlanTerms
 import org.axonframework.eventsourcing.annotation.EventSourcingHandler
@@ -18,7 +19,7 @@ class Membership {
     private lateinit var membershipId: MembershipId
     private lateinit var customerId: CustomerId
     private lateinit var planTerms: PlanTerms
-    private lateinit var status: MembershipStatus
+    private var status: MembershipStatus = ACTIVE
     private lateinit var customerEligibility: CustomerEligibility
     private var pausePeriod: PausePeriod? = null
 
@@ -50,7 +51,7 @@ class Membership {
         require (status != MembershipStatus.PAUSED) {
             "Membership is already paused"
         }
-        require (status == MembershipStatus.ACTIVE) {
+        require (status == ACTIVE) {
             "Cannot pause a non-active membership"
         }
         eventAppender.append(MembershipPausedEvent(cmd.membershipId, cmd.pausePeriod))
@@ -59,7 +60,7 @@ class Membership {
     @CommandHandler
     fun suspend(cmd: SuspendMembershipCommand, eventAppender: EventAppender) {
         ensureNotCancelled()
-        require(status == MembershipStatus.ACTIVE) {
+        require(status == ACTIVE) {
             "Only active memberships can be suspended"
         }
         eventAppender.append(MembershipSuspendedEvent(cmd.membershipId))
@@ -96,7 +97,7 @@ class Membership {
     }
 
     private fun cancelableStatus(): Set<MembershipStatus> =
-        setOf(MembershipStatus.ACTIVE, MembershipStatus.PAUSED, MembershipStatus.SUSPENDED)
+        setOf(ACTIVE, MembershipStatus.PAUSED, MembershipStatus.SUSPENDED)
 
     @EventSourcingHandler
     fun on(evt: MembershipActivatedEvent) {
@@ -104,7 +105,7 @@ class Membership {
         customerId = evt.customerId
         planTerms = evt.planTerms
         customerEligibility = evt.customerEligibility
-        status = MembershipStatus.ACTIVE
+        status = ACTIVE
     }
 
     @EventSourcingHandler
@@ -122,13 +123,13 @@ class Membership {
 
     @EventSourcingHandler
     fun on(event: MembershipResumedEvent) {
-        status = MembershipStatus.ACTIVE
+        status = ACTIVE
         pausePeriod = null
     }
 
     @EventSourcingHandler
     fun on(event: MembershipReactivatedEvent) {
-        status = MembershipStatus.ACTIVE
+        status = ACTIVE
     }
 
     @EventSourcingHandler

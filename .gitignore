@@ -36,6 +36,7 @@ dependency-reduced-pom.xml
 *.log
 logs/
 **/logs/
+.dev-logs/
 spring.log
 
 # === OS / tooling noise ===

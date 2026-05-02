@@ -26,9 +26,9 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "name": "Oliver Zihler Updated",
+  "name": "Updated Member",
   "dateOfBirth": "1986-08-13",
-  "email": "oliver.updated@codeartify.com"
+  "email": "knowledge@codeartify.com"
 }
 
 ### Delete customer

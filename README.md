@@ -1,20 +1,21 @@
-# Event-Sourced DDD with Axon 
+# Event-Sourced DDD with Axon
 
-This repository contains a small multi-service fitness management system built around Event Sourcing, CQRS, and Kafka-based integration.
+This repository contains a small multi-service fitness management system built around Event Sourcing, CQRS, and
+Kafka-based integration.
 
 ## Services
 
 - `identity` on `http://localhost:8082`
-  - manages customers
-  - persists customer read models in PostgreSQL
-  - publishes customer integration events to Kafka
+    - manages customers
+    - persists customer read models in PostgreSQL
+    - publishes customer integration events to Kafka
 
 - `fitness_management_system` on `http://localhost:8081`
-  - manages plans and memberships
-  - stores Axon events and membership projections in PostgreSQL
-  - consumes customer integration events from Kafka
-  - issues billing events when memberships are activated
-  - notifies customers about invoices
+    - manages plans and memberships
+    - stores Axon events and membership projections in PostgreSQL
+    - consumes customer integration events from Kafka
+    - issues billing events when memberships are activated
+    - notifies customers about invoices
 
 ## Infrastructure
 
@@ -31,6 +32,19 @@ This repository contains a small multi-service fitness management system built a
 
 ## Start The System
 
+### One-click start
+
+Double-click [`start-dev.command`](./start-dev.command), or run:
+
+```bash
+./start-dev.sh
+```
+
+In IntelliJ, use the shared `Start All` run configuration.
+
+This starts Docker Compose first, then starts `identity` and `fitness_management_system`.
+Logs are written to `.dev-logs/`.
+
 ### 1. Start infrastructure
 
 ```bash
@@ -38,6 +52,7 @@ docker compose up
 ```
 
 This starts:
+
 - `identity-db` on `localhost:5433`
 - `fitness-management-db` on `localhost:5434`
 - Kafka on `localhost:9092`
@@ -193,13 +208,13 @@ DELETE http://localhost:8081/memberships/{{membershipId}}
 
 ### Customer API (`identity`, port `8082`)
 
-| Method | Path | Description |
-|---|---|---|
-| `POST` | `/customers` | Create a customer and publish a customer integration event |
-| `GET` | `/customers` | List customers |
-| `GET` | `/customers/{id}` | Get one customer |
-| `PUT` | `/customers/{id}` | Update a customer and publish a customer integration event |
-| `DELETE` | `/customers/{id}` | Delete a customer |
+| Method   | Path              | Description                                                |
+|----------|-------------------|------------------------------------------------------------|
+| `POST`   | `/customers`      | Create a customer and publish a customer integration event |
+| `GET`    | `/customers`      | List customers                                             |
+| `GET`    | `/customers/{id}` | Get one customer                                           |
+| `PUT`    | `/customers/{id}` | Update a customer and publish a customer integration event |
+| `DELETE` | `/customers/{id}` | Delete a customer                                          |
 
 Create/update request body:
 
@@ -213,12 +228,12 @@ Create/update request body:
 
 ### Plan API (`fitness_management_system`, port `8081`)
 
-| Method | Path | Description |
-|---|---|---|
-| `POST` | `/plans` | Create a plan |
-| `GET` | `/plans` | List plans ordered by duration |
-| `PUT` | `/plans/{planId}` | Update a plan |
-| `DELETE` | `/plans/{planId}` | Delete a plan |
+| Method   | Path              | Description                    |
+|----------|-------------------|--------------------------------|
+| `POST`   | `/plans`          | Create a plan                  |
+| `GET`    | `/plans`          | List plans ordered by duration |
+| `PUT`    | `/plans/{planId}` | Update a plan                  |
+| `DELETE` | `/plans/{planId}` | Delete a plan                  |
 
 Create/update request body:
 
@@ -245,16 +260,16 @@ Plan response:
 
 ### Membership API (`fitness_management_system`, port `8081`)
 
-| Method | Path | Description |
-|---|---|---|
-| `POST` | `/memberships/activate` | Activate a membership |
-| `GET` | `/memberships` | List flat membership projections |
-| `GET` | `/memberships/{membershipId}` | Get one flat membership projection |
-| `POST` | `/memberships/{membershipId}/pause` | Pause an active membership |
-| `POST` | `/memberships/{membershipId}/resume` | Resume a paused membership |
-| `POST` | `/memberships/{membershipId}/suspend` | Suspend an active membership |
-| `POST` | `/memberships/{membershipId}/reactivate` | Reactivate a suspended membership |
-| `DELETE` | `/memberships/{membershipId}` | Cancel an active, paused, or suspended membership |
+| Method   | Path                                     | Description                                       |
+|----------|------------------------------------------|---------------------------------------------------|
+| `POST`   | `/memberships/activate`                  | Activate a membership                             |
+| `GET`    | `/memberships`                           | List flat membership projections                  |
+| `GET`    | `/memberships/{membershipId}`            | Get one flat membership projection                |
+| `POST`   | `/memberships/{membershipId}/pause`      | Pause an active membership                        |
+| `POST`   | `/memberships/{membershipId}/resume`     | Resume a paused membership                        |
+| `POST`   | `/memberships/{membershipId}/suspend`    | Suspend an active membership                      |
+| `POST`   | `/memberships/{membershipId}/reactivate` | Reactivate a suspended membership                 |
+| `DELETE` | `/memberships/{membershipId}`            | Cancel an active, paused, or suspended membership |
 
 Activation request body:
 
@@ -278,8 +293,8 @@ Pause request body:
 
 This endpoint is useful when running `fitness_management_system` without replaying customer events from `identity`.
 
-| Method | Path | Description |
-|---|---|---|
+| Method | Path              | Description                                                             |
+|--------|-------------------|-------------------------------------------------------------------------|
 | `POST` | `/customer-cache` | Backfill one customer into the fitness management system customer cache |
 
 Request body:
@@ -295,17 +310,17 @@ Request body:
 
 ## Membership Lifecycle
 
-| From State | Command | Event | To State | Rule / Invariant |
-|---|---|---|---|---|
-| none | `ActivateMembership` | `MembershipActivated` | `ACTIVE` | Customer is eligible; plan terms are known; membership does not already exist |
-| `ACTIVE` | `PauseMembership` | `MembershipPaused` | `PAUSED` | Only active memberships can be paused; pause duration must be between 30 and 60 days |
-| `PAUSED` | `ResumeMembership` | `MembershipResumed` | `ACTIVE` | Only paused memberships can be resumed |
-| `ACTIVE` | `SuspendMembership` | `MembershipSuspended` | `SUSPENDED` | Only active memberships can be suspended |
-| `SUSPENDED` | `ReactivateMembership` | `MembershipReactivated` | `ACTIVE` | Only suspended memberships can be reactivated |
-| `ACTIVE` | `CancelMembership` | `MembershipCancelled` | `CANCELLED` | Active memberships can be cancelled |
-| `PAUSED` | `CancelMembership` | `MembershipCancelled` | `CANCELLED` | Paused memberships can be cancelled |
-| `SUSPENDED` | `CancelMembership` | `MembershipCancelled` | `CANCELLED` | Suspended memberships can be cancelled |
-| `CANCELLED` | any transition command | rejected | `CANCELLED` | Cancelled is terminal |
+| From State  | Command                | Event                   | To State    | Rule / Invariant                                                                     |
+|-------------|------------------------|-------------------------|-------------|--------------------------------------------------------------------------------------|
+| none        | `ActivateMembership`   | `MembershipActivated`   | `ACTIVE`    | Customer is eligible; plan terms are known; membership does not already exist        |
+| `ACTIVE`    | `PauseMembership`      | `MembershipPaused`      | `PAUSED`    | Only active memberships can be paused; pause duration must be between 30 and 60 days |
+| `PAUSED`    | `ResumeMembership`     | `MembershipResumed`     | `ACTIVE`    | Only paused memberships can be resumed                                               |
+| `ACTIVE`    | `SuspendMembership`    | `MembershipSuspended`   | `SUSPENDED` | Only active memberships can be suspended                                             |
+| `SUSPENDED` | `ReactivateMembership` | `MembershipReactivated` | `ACTIVE`    | Only suspended memberships can be reactivated                                        |
+| `ACTIVE`    | `CancelMembership`     | `MembershipCancelled`   | `CANCELLED` | Active memberships can be cancelled                                                  |
+| `PAUSED`    | `CancelMembership`     | `MembershipCancelled`   | `CANCELLED` | Paused memberships can be cancelled                                                  |
+| `SUSPENDED` | `CancelMembership`     | `MembershipCancelled`   | `CANCELLED` | Suspended memberships can be cancelled                                               |
+| `CANCELLED` | any transition command | rejected                | `CANCELLED` | Cancelled is terminal                                                                |
 
 ## Data Flow
 
@@ -313,7 +328,8 @@ At a high level:
 
 1. `identity` creates and updates customers.
 2. Customer changes are published to Kafka on `managing-customer.integration-events.v1`.
-3. `fitness_management_system` consumes those customer integration events and keeps a local customer cache for membership operations.
+3. `fitness_management_system` consumes those customer integration events and keeps a local customer cache for
+   membership operations.
 4. `fitness_management_system` manages plans and membership lifecycle state.
 5. Membership activation triggers downstream billing behavior inside the membership bounded context.
 
