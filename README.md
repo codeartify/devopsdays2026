@@ -9,7 +9,7 @@ This repository contains a small multi-service fitness management system built a
   - persists customer read models in PostgreSQL
   - publishes customer integration events to Kafka
 
-- `membership` on `http://localhost:8081`
+- `fitness_management_system` on `http://localhost:8081`
   - manages plans and memberships
   - stores Axon events and membership projections in PostgreSQL
   - consumes customer integration events from Kafka
@@ -19,7 +19,7 @@ This repository contains a small multi-service fitness management system built a
 ## Infrastructure
 
 - PostgreSQL for `identity` on port `5433`
-- PostgreSQL for `membership` on port `5434`
+- PostgreSQL for `fitness_management_system` on port `5434`
 - Kafka on port `9092`
 - Axon Server is not used in this setup
 
@@ -51,12 +51,12 @@ cd identity
 ./mvnw spring-boot:run
 ```
 
-### 3. Start the `membership` service
+### 3. Start the `fitness_management_system` service
 
 In another terminal:
 
 ```bash
-cd membership
+cd fitness_management_system
 ./mvnw spring-boot:run
 ```
 
@@ -89,7 +89,7 @@ Content-Type: application/json
 }
 ```
 
-### 2. Create a plan in `membership`
+### 2. Create a plan in `fitness_management_system`
 
 Use [`r_plans.http`](./resources/requests/r_plans.http):
 
@@ -211,7 +211,7 @@ Create/update request body:
 }
 ```
 
-### Plan API (`membership`, port `8081`)
+### Plan API (`fitness_management_system`, port `8081`)
 
 | Method | Path | Description |
 |---|---|---|
@@ -243,7 +243,7 @@ Plan response:
 }
 ```
 
-### Membership API (`membership`, port `8081`)
+### Membership API (`fitness_management_system`, port `8081`)
 
 | Method | Path | Description |
 |---|---|---|
@@ -274,13 +274,13 @@ Pause request body:
 }
 ```
 
-### Customer Cache API (`membership`, port `8081`)
+### Customer Cache API (`fitness_management_system`, port `8081`)
 
-This endpoint is useful when running `membership` without replaying customer events from `identity`.
+This endpoint is useful when running `fitness_management_system` without replaying customer events from `identity`.
 
 | Method | Path | Description |
 |---|---|---|
-| `POST` | `/customer-cache` | Backfill one customer into the membership service customer cache |
+| `POST` | `/customer-cache` | Backfill one customer into the fitness management system customer cache |
 
 Request body:
 
@@ -313,12 +313,12 @@ At a high level:
 
 1. `identity` creates and updates customers.
 2. Customer changes are published to Kafka on `managing-customer.integration-events.v1`.
-3. `membership` consumes those customer integration events and keeps a local customer cache for membership operations.
-4. `membership` manages plans and membership lifecycle state.
+3. `fitness_management_system` consumes those customer integration events and keeps a local customer cache for membership operations.
+4. `fitness_management_system` manages plans and membership lifecycle state.
 5. Membership activation triggers downstream billing behavior inside the membership bounded context.
 
 ## Notes
 
 - Both services use PostgreSQL for data storage.
-- `membership` uses Axon with PostgreSQL-backed event storage.
+- `fitness_management_system` uses Axon with PostgreSQL-backed event storage.
 - Kafka is used only for cross-service integration, not as the Axon event store.

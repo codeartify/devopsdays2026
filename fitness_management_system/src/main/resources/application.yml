@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: membership
+    name: fitness-management-system
 
   datasource:
     url: jdbc:postgresql://localhost:5434/fitness-management

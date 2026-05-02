@@ -12,14 +12,14 @@
     </parent>
 
     <groupId>com.codeartify</groupId>
-    <artifactId>fitness-management-system</artifactId>
+    <artifactId>fitness-management-system-parent</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>fitness-management-system</name>
+    <name>fitness-management-system-parent</name>
     <description>Parent POM for Fitness Management System</description>
 
     <modules>
-        <module>membership</module>
+        <module>fitness_management_system</module>
         <module>identity</module>
     </modules>
 

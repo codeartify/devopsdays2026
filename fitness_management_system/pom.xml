@@ -4,14 +4,14 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.codeartify</groupId>
-        <artifactId>fitness-management-system</artifactId>
+        <artifactId>fitness-management-system-parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>membership</artifactId>
-    <name>membership</name>
-    <description>membership</description>
+    <artifactId>fitness-management-system</artifactId>
+    <name>Fitness Management System</name>
+    <description>Fitness Management System</description>
 
     <dependencies>
         <!-- Spring Kafka for direct consumer -->
