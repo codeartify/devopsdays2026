@@ -14,6 +14,9 @@
 * current state = result of replaying events
 
 ---
+### Example EventStorming
+
+---
 
 ### What is a Domain Event
 

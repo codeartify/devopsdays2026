@@ -27,12 +27,21 @@ class Invoice() {
             customerId: CustomerId,
             amount: Price
         ): Invoice {
+            val issuedAt = LocalDate.now()
+            val dueDate = issuedAt.plusDays(GRACE_PERIOD)
+            require(amount.value > 0) {
+                "Invoice amount must be greater than zero"
+            }
+            require(dueDate.isAfter(issuedAt)) {
+                "Invoice due date must be in the future"
+            }
+
             val invoice = Invoice()
             invoice.id = UUID.randomUUID().toString()
             invoice.membershipId = membershipId.value
             invoice.customerId = customerId.value
             invoice.amount = amount.value
-            invoice.dueDate = LocalDate.now().plusDays(GRACE_PERIOD)
+            invoice.dueDate = dueDate
             return invoice
         }
     }

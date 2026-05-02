@@ -1,7 +1,7 @@
 # Exercises
 
 ## 1 Send a command
-* send a command to activate a membership
+* send a command to activate a membership (ActivateMembershipUseCase)
   * the command should contain:
     * the customer ID (value object, not null)
     * the agreed upon plan terms containing
