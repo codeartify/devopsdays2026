@@ -5,6 +5,7 @@ import com.codeartify.managingcustomers.integration.CustomerRegisteredIntegratio
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.LocalDate
 import java.util.UUID
 
 @Service
@@ -71,18 +72,19 @@ class CustomerService(
     )
 
     private fun publishCustomerRegistered(customer: CustomerEntity) {
-        val integrationEvent = CustomerRegisteredIntegrationEventV1(
-            customerId = customer.id,
-            name = customer.name,
-            email = customer.email,
-            dateOfBirth = java.time.LocalDate.parse(customer.dateOfBirth)
-        )
         val envelope = mapOf(
             "type" to "CustomerRegistered",
             "version" to 1,
-            "payload" to integrationEvent
+            "payload" to CustomerRegisteredIntegrationEventV1(
+                customerId = customer.id,
+                name = customer.name,
+                email = customer.email,
+                dateOfBirth = LocalDate.parse(customer.dateOfBirth)
+            )
         )
+
         log.info("Publishing event: {}", envelope)
+
         customerPublisher.publish(customer.id, envelope)
     }
 }
