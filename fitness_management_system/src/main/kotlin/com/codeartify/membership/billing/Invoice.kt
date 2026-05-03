@@ -4,6 +4,8 @@ import com.codeartify.membership.managing_memberships.domain.CustomerId
 import com.codeartify.membership.managing_memberships.domain.MembershipId
 import com.codeartify.membership.managing_memberships.domain.values.Price
 import jakarta.persistence.Entity
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
 import jakarta.persistence.Id
 import jakarta.persistence.Table
 import java.time.LocalDate
@@ -20,6 +22,8 @@ class Invoice() {
     var customerId: String = ""
     var amount: Int = 0
     var dueDate: LocalDate = LocalDate.now()
+    @Enumerated(EnumType.STRING)
+    var state: InvoiceState = InvoiceState.OPEN
 
     companion object {
         fun issueFor(
@@ -42,7 +46,9 @@ class Invoice() {
             invoice.customerId = customerId.value
             invoice.amount = amount.value
             invoice.dueDate = dueDate
+            invoice.state = InvoiceState.OPEN
             return invoice
         }
     }
 }
+

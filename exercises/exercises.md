@@ -59,7 +59,11 @@ See the different endpoints in managing_membership.use_case.
 
 * Make sure to update the MembershipEntity on state changes (see MembershipProjection)
 
-## 6. Reporting Projections
+## 6. Additions
+1. Add an endpoint to pay an invoice:
+   * on InvoicePaidEvent, reactivate the membership if it was suspended
+
+## 7. Reporting Projections
 * Growth curve: for each month and year, number of memberships per month activated
 * Send a bonus email for all customers that have ever paused their memberships
 * Categorise members for marketing purposes into 
