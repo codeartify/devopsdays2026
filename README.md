@@ -13,7 +13,7 @@ This project is the property of Codeartify GmbH and may only be used under the t
 - `identity` on `http://localhost:8082`
     - manages customers
     - persists customer read models in PostgreSQL
-    - publishes customer integration events to Kafka
+    - publishes customer registration integration events to Kafka
 
 - `fitness_management_system` on `http://localhost:8081`
     - manages plans and memberships
@@ -112,6 +112,11 @@ Content-Type: application/json
 ### 2. Create a plan in `fitness_management_system`
 
 Use [`r_plans.http`](./resources/requests/r_plans.http):
+
+The customer registration event is consumed asynchronously by `fitness_management_system`.
+If you run `fitness_management_system` without `identity` or without Kafka history, use
+[`r_customer_cache.http`](./resources/requests/r_customer_cache.http) to backfill the customer cache before activating a
+membership.
 
 ```http
 POST http://localhost:8081/plans
@@ -218,7 +223,7 @@ DELETE http://localhost:8081/memberships/{{membershipId}}
 | `POST`   | `/customers`      | Create a customer and publish a customer integration event |
 | `GET`    | `/customers`      | List customers                                             |
 | `GET`    | `/customers/{id}` | Get one customer                                           |
-| `PUT`    | `/customers/{id}` | Update a customer and publish a customer integration event |
+| `PUT`    | `/customers/{id}` | Update a customer in the identity database                 |
 | `DELETE` | `/customers/{id}` | Delete a customer                                          |
 
 Create/update request body:
@@ -230,6 +235,9 @@ Create/update request body:
   "email": "info@codeartify.com"
 }
 ```
+
+Only customer creation currently publishes a `CustomerRegistered` integration event. Customer updates and deletes are
+local to the `identity` service and are not propagated to `fitness_management_system`.
 
 ### Plan API (`fitness_management_system`, port `8081`)
 
@@ -331,12 +339,37 @@ Request body:
 
 At a high level:
 
-1. `identity` creates and updates customers.
-2. Customer changes are published to Kafka on `managing-customer.integration-events.v1`.
+1. `identity` creates customers.
+2. Customer registrations are published to Kafka on `managing-customer.integration-events.v1`.
 3. `fitness_management_system` consumes those customer integration events and keeps a local customer cache for
    membership operations.
 4. `fitness_management_system` manages plans and membership lifecycle state.
 5. Membership activation triggers downstream billing behavior inside the membership bounded context.
+
+## Event Processing
+
+`fitness_management_system` uses explicit Axon event processor definitions:
+
+| Processor                   | Mode     | Purpose                                                                 |
+|-----------------------------|----------|-------------------------------------------------------------------------|
+| `membership-invoice-policy` | pooled   | Handles billing policy events and issues invoices                       |
+| `membership-projection`     | pooled   | Maintains the flat membership read model                                |
+| `notifying-customers`       | pooled   | Sends invoice notifications; starts at the latest token if no token row exists |
+
+The `notifying-customers` processor intentionally starts at the current end of the event stream when its token entry is
+missing. This keeps deleted notification tokens from replaying historical invoice events and resending old emails.
+
+Kafka customer-cache consumption is separate from Axon event processing and uses the consumer group
+`managing-customer-readmodel`.
+
+## Continuous Integration
+
+GitHub Actions runs [`ci.yml`](./.github/workflows/ci.yml) on pushes and pull requests for the `solutions` branch.
+The workflow uses Java 25, checks Docker availability, and runs:
+
+```bash
+mvn -B -ntp -Ddocker.compose.skip=true clean verify
+```
 
 ## Notes
 
