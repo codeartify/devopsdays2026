@@ -35,12 +35,12 @@ axon:
 
   eventhandling:
     processors:
-      "[com.codeartify.membership.billing]":
+      billing:
         mode: pooled
-      "[com.codeartify.membership.managing_memberships.use_cases.query_memberships]":
+      membership-projection:
         mode: pooled
-      "[com.codeartify.membership.notifying]":
-        mode: subscribing
+      notifying-customers:
+        mode: pooled
 
   serializer:
     general: jackson
