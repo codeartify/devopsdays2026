@@ -1,0 +1,48 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: fitness-management-system
+
+  datasource:
+    url: jdbc:postgresql://localhost:5434/fitness-management
+    username: test
+    password: test
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+  kafka:
+    bootstrap-servers: localhost:9092
+
+    consumer:
+      group-id: managing-customer-readmodel
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+
+    listener:
+      ack-mode: record
+app:
+  kafka:
+    topics:
+      managing-customer: managing-customer.integration-events.v1
+axon:
+  axonserver:
+    enabled: false   # no Axon Server
+
+  eventhandling:
+    processors:
+      billing:
+        mode: pooled
+      membership-projection:
+        mode: pooled
+      notifying-customers:
+        mode: pooled
+
+  serializer:
+    general: jackson
+    events: jackson
+    messages: jackson

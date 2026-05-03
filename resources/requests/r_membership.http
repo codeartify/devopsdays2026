@@ -1,0 +1,42 @@
+### Activate membership
+POST http://localhost:8081/memberships/activate
+Content-Type: application/json
+Accept: application/json
+
+{
+  "customerId": "{{customerId}}",
+  "planId": "{{planId}}",
+  "signedByGuardian": false
+}
+
+> {%
+    client.global.set("membershipId", response.body);
+%}
+
+### List memberships
+GET http://localhost:8081/memberships
+Accept: application/json
+
+### Get membership by ID
+GET http://localhost:8081/memberships/{{membershipId}}
+Accept: application/json
+
+### Pause membership
+POST http://localhost:8081/memberships/{{membershipId}}/pause
+Content-Type: application/json
+
+{
+  "durationInDays": 30
+}
+
+### Resume membership
+POST http://localhost:8081/memberships/{{membershipId}}/resume
+
+### Suspend membership
+POST http://localhost:8081/memberships/{{membershipId}}/suspend
+
+### Reactivate membership
+POST http://localhost:8081/memberships/{{membershipId}}/reactivate
+
+### Cancel membership
+DELETE http://localhost:8081/memberships/{{membershipId}}
