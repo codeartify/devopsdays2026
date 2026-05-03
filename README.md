@@ -3,6 +3,11 @@
 This repository contains a small multi-service fitness management system built around Event Sourcing, CQRS, and
 Kafka-based integration.
 
+## License
+
+This project is the property of Codeartify GmbH and may only be used under the terms of the
+[Codeartify Workshop License Agreement](./LICENSE.md).
+
 ## Services
 
 - `identity` on `http://localhost:8082`
