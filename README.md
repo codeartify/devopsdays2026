@@ -92,6 +92,9 @@ The repo already contains IntelliJ HTTP client files under [`resources/requests`
 
 These files store `customerId`, `planId`, and `membershipId` for the next requests.
 
+The equivalent Postman collection can be found and imported from here:
+[`resources/requests/postman/request_collection.json`](./resources/requests/postman/request_collection.json).
+
 ## Suggested Walkthrough
 
 ### 1. Create a customer in `identity`

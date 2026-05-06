@@ -1,0 +1,636 @@
+{
+  "info": {
+    "name": "Fitness Management",
+    "description": "Postman equivalent of the IntelliJ HTTP requests in resources/requests.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "identityBaseUrl",
+      "value": "http://localhost:8082"
+    },
+    {
+      "key": "membershipBaseUrl",
+      "value": "http://localhost:8081"
+    },
+    {
+      "key": "customerId",
+      "value": ""
+    },
+    {
+      "key": "planId",
+      "value": ""
+    },
+    {
+      "key": "membershipId",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Customers",
+      "item": [
+        {
+          "name": "Create customer",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.text();",
+                  "let value = body;",
+                  "try {",
+                  "  const json = pm.response.json();",
+                  "  value = typeof json === 'string' ? json : (json.id || json.customerId || body);",
+                  "} catch (e) {}",
+                  "pm.collectionVariables.set('customerId', value);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"New Member\",\n  \"dateOfBirth\": \"1987-08-12\",\n  \"email\": \"info@codeartify.com\"\n}"
+            },
+            "url": {
+              "raw": "{{identityBaseUrl}}/customers",
+              "host": [
+                "{{identityBaseUrl}}"
+              ],
+              "path": [
+                "customers"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get customer",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{identityBaseUrl}}/customers/{{customerId}}",
+              "host": [
+                "{{identityBaseUrl}}"
+              ],
+              "path": [
+                "customers",
+                "{{customerId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get all customers",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{identityBaseUrl}}/customers",
+              "host": [
+                "{{identityBaseUrl}}"
+              ],
+              "path": [
+                "customers"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update customer",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated Member\",\n  \"dateOfBirth\": \"1986-08-13\",\n  \"email\": \"knowledge@codeartify.com\"\n}"
+            },
+            "url": {
+              "raw": "{{identityBaseUrl}}/customers/{{customerId}}",
+              "host": [
+                "{{identityBaseUrl}}"
+              ],
+              "path": [
+                "customers",
+                "{{customerId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete customer",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{identityBaseUrl}}/customers/{{customerId}}",
+              "host": [
+                "{{identityBaseUrl}}"
+              ],
+              "path": [
+                "customers",
+                "{{customerId}}"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Customer Cache",
+      "item": [
+        {
+          "name": "Backfill customer into membership cache",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"{{customerId}}\",\n  \"name\": \"New Member\",\n  \"dateOfBirth\": \"1987-08-12\",\n  \"email\": \"info@codeartify.com\"\n}"
+            },
+            "url": {
+              "raw": "{{membershipBaseUrl}}/customer-cache",
+              "host": [
+                "{{membershipBaseUrl}}"
+              ],
+              "path": [
+                "customer-cache"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Plans",
+      "item": [
+        {
+          "name": "Create 1 month plan",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.text();",
+                  "let value = body;",
+                  "try {",
+                  "  const json = pm.response.json();",
+                  "  value = typeof json === 'string' ? json : (json.id || json.planId || body);",
+                  "} catch (e) {}",
+                  "pm.collectionVariables.set('planId', value);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"1 Month\",\n  \"description\": \"Flexible monthly membership plan.\",\n  \"price\": 139,\n  \"durationInMonths\": 1\n}"
+            },
+            "url": {
+              "raw": "{{membershipBaseUrl}}/plans",
+              "host": [
+                "{{membershipBaseUrl}}"
+              ],
+              "path": [
+                "plans"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create 6 month plan",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.text();",
+                  "let value = body;",
+                  "try {",
+                  "  const json = pm.response.json();",
+                  "  value = typeof json === 'string' ? json : (json.id || json.planId || body);",
+                  "} catch (e) {}",
+                  "pm.collectionVariables.set('planId', value);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"6 Months\",\n  \"description\": \"Half-year membership plan with better value.\",\n  \"price\": 599,\n  \"durationInMonths\": 6\n}"
+            },
+            "url": {
+              "raw": "{{membershipBaseUrl}}/plans",
+              "host": [
+                "{{membershipBaseUrl}}"
+              ],
+              "path": [
+                "plans"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create 12 month plan",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.text();",
+                  "let value = body;",
+                  "try {",
+                  "  const json = pm.response.json();",
+                  "  value = typeof json === 'string' ? json : (json.id || json.planId || body);",
+                  "} catch (e) {}",
+                  "pm.collectionVariables.set('planId', value);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"12 Months\",\n  \"description\": \"Annual membership plan.\",\n  \"price\": 999,\n  \"durationInMonths\": 12\n}"
+            },
+            "url": {
+              "raw": "{{membershipBaseUrl}}/plans",
+              "host": [
+                "{{membershipBaseUrl}}"
+              ],
+              "path": [
+                "plans"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create 24 month plan",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.text();",
+                  "let value = body;",
+                  "try {",
+                  "  const json = pm.response.json();",
+                  "  value = typeof json === 'string' ? json : (json.id || json.planId || body);",
+                  "} catch (e) {}",
+                  "pm.collectionVariables.set('planId', value);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"24 Months\",\n  \"description\": \"Two-year membership plan with the best long-term value.\",\n  \"price\": 1699,\n  \"durationInMonths\": 24\n}"
+            },
+            "url": {
+              "raw": "{{membershipBaseUrl}}/plans",
+              "host": [
+                "{{membershipBaseUrl}}"
+              ],
+              "path": [
+                "plans"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get all plans",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{membershipBaseUrl}}/plans",
+              "host": [
+                "{{membershipBaseUrl}}"
+              ],
+              "path": [
+                "plans"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update plan",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"1 Month Flex\",\n  \"description\": \"Flexible monthly membership plan with updated price.\",\n  \"price\": 150,\n  \"durationInMonths\": 1\n}"
+            },
+            "url": {
+              "raw": "{{membershipBaseUrl}}/plans/{{planId}}",
+              "host": [
+                "{{membershipBaseUrl}}"
+              ],
+              "path": [
+                "plans",
+                "{{planId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete plan",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{membershipBaseUrl}}/plans/{{planId}}",
+              "host": [
+                "{{membershipBaseUrl}}"
+              ],
+              "path": [
+                "plans",
+                "{{planId}}"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Memberships",
+      "item": [
+        {
+          "name": "Activate membership",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.text();",
+                  "let value = body;",
+                  "try {",
+                  "  const json = pm.response.json();",
+                  "  value = typeof json === 'string' ? json : (json.id || json.membershipId || body);",
+                  "} catch (e) {}",
+                  "pm.collectionVariables.set('membershipId', value);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerId\": \"{{customerId}}\",\n  \"planId\": \"{{planId}}\",\n  \"signedByGuardian\": false\n}"
+            },
+            "url": {
+              "raw": "{{membershipBaseUrl}}/memberships/activate",
+              "host": [
+                "{{membershipBaseUrl}}"
+              ],
+              "path": [
+                "memberships",
+                "activate"
+              ]
+            }
+          }
+        },
+        {
+          "name": "List memberships",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{membershipBaseUrl}}/memberships",
+              "host": [
+                "{{membershipBaseUrl}}"
+              ],
+              "path": [
+                "memberships"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get membership by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{membershipBaseUrl}}/memberships/{{membershipId}}",
+              "host": [
+                "{{membershipBaseUrl}}"
+              ],
+              "path": [
+                "memberships",
+                "{{membershipId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Pause membership",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"durationInDays\": 30\n}"
+            },
+            "url": {
+              "raw": "{{membershipBaseUrl}}/memberships/{{membershipId}}/pause",
+              "host": [
+                "{{membershipBaseUrl}}"
+              ],
+              "path": [
+                "memberships",
+                "{{membershipId}}",
+                "pause"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Resume membership",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{membershipBaseUrl}}/memberships/{{membershipId}}/resume",
+              "host": [
+                "{{membershipBaseUrl}}"
+              ],
+              "path": [
+                "memberships",
+                "{{membershipId}}",
+                "resume"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Suspend membership",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{membershipBaseUrl}}/memberships/{{membershipId}}/suspend",
+              "host": [
+                "{{membershipBaseUrl}}"
+              ],
+              "path": [
+                "memberships",
+                "{{membershipId}}",
+                "suspend"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Reactivate membership",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{membershipBaseUrl}}/memberships/{{membershipId}}/reactivate",
+              "host": [
+                "{{membershipBaseUrl}}"
+              ],
+              "path": [
+                "memberships",
+                "{{membershipId}}",
+                "reactivate"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Cancel membership",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{membershipBaseUrl}}/memberships/{{membershipId}}",
+              "host": [
+                "{{membershipBaseUrl}}"
+              ],
+              "path": [
+                "memberships",
+                "{{membershipId}}"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
