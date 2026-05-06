@@ -12,8 +12,8 @@ import org.springframework.boot.runApplication
         "org.axonframework.messaging.eventhandling.processing.streaming.token.store.jpa"
     ]
 )
-class MembershipApplication
+class FitnessManagementApplication
 
 fun main(args: Array<String>) {
-    runApplication<MembershipApplication>(*args)
+    runApplication<FitnessManagementApplication>(*args)
 }
