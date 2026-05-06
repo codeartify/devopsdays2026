@@ -35,14 +35,14 @@ docker compose -f "$ROOT_DIR/docker-compose.yml" up -d
 echo "Starting identity on http://localhost:8082..."
 (
   cd "$IDENTITY_DIR"
-  ./mvnw spring-boot:run
+  ./mvnw -Dmaven.test.skip=true spring-boot:run
 ) >"$LOG_DIR/identity.log" 2>&1 &
 identity_pid=$!
 
 echo "Starting fitness-management-system on http://localhost:8081..."
 (
   cd "$FITNESS_MANAGEMENT_DIR"
-  ./mvnw spring-boot:run
+  ./mvnw -Dmaven.test.skip=true spring-boot:run
 ) >"$LOG_DIR/fitness-management-system.log" 2>&1 &
 fitness_management_pid=$!
 
