@@ -1,5 +1,6 @@
 package com.codeartify.membership.customer_cache
 
+import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController
 class CustomerCacheController(
     private val customerCacheRepository: CustomerCacheRepository
 ) {
+    private val log = LoggerFactory.getLogger(javaClass)
 
     @PostMapping
     fun backfillCustomer(@RequestBody request: CustomerCacheBackfillRequest): ResponseEntity<String> {
@@ -22,6 +24,8 @@ class CustomerCacheController(
                 dateOfBirth = request.dateOfBirth
             )
         )
+
+        log.info("Customer ${request.id} has been backfilled with id ${request.id}")
 
         return ResponseEntity.ok(request.id)
     }
