@@ -76,7 +76,7 @@ class CustomerMembershipBillingIntegrationTest {
             )
             .run()
 
-        membershipContext = SpringApplicationBuilder(MembershipApplication::class.java, MembershipTestOverrides::class.java)
+        membershipContext = SpringApplicationBuilder(FitnessManagementApplication::class.java, MembershipTestOverrides::class.java)
             .web(WebApplicationType.SERVLET)
             .properties(
                 mapOf(

@@ -24,10 +24,6 @@ class UpdatePlanUseCase(
         val price = PlanPrice.of(request.price)
         val duration = PlanDuration.of(request.durationInMonths)
 
-        require(!planRepository.existsByDurationAndIdNot(duration, existingPlanId.value)) {
-            "Plan with duration ${duration.value} months already exists"
-        }
-
         val plan = planRepository.findById(existingPlanId.value)
             .orElseThrow { IllegalArgumentException("Plan with ID ${existingPlanId.value} not found") }
 
