@@ -19,8 +19,12 @@ class DefinePlanUseCase(
 ) {
     @Transactional
     fun execute(request: CreatePlanRequest): PlanId {
+        val duration = PlanDuration.of(request.durationInMonths)
+        require(!planRepository.existsByDuration(duration)) {
+            "Plan with duration ${duration.value} months already exists"
+        }
         val planId = PlanId.generate()
-        val plan = toPlan(request, planId)
+        val plan = toPlan(request, planId, duration)
 
         planRepository.save(plan)
 
@@ -31,12 +35,23 @@ class DefinePlanUseCase(
                     plan.title.value,
                     plan.description.value,
                     plan.price.value,
-                    plan.duration.value
+                    duration.value
                 )
             )
         )
 
         return planId
+    }
+
+    private fun toPlan(
+        request: CreatePlanRequest,
+        planId: PlanId,
+        duration: PlanDuration
+    ): Plan {
+        val title = PlanTitle.of(request.title)
+        val description = PlanDescription.of(request.description)
+        val price = PlanPrice.of(request.price)
+        return Plan.create(planId, title, description, price, duration)
     }
 
     private fun toPlan(
