@@ -1,4 +1,4 @@
-name: Solutions CI
+name: CI
 
 on:
   push:
