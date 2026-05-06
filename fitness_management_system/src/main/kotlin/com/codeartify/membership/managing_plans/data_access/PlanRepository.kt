@@ -5,6 +5,6 @@ import com.codeartify.membership.managing_plans.domain.PlanDuration
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface PlanRepository : JpaRepository<Plan, String> {
-    fun existsByDurationAndIdNot(duration: PlanDuration, id: String): Boolean
+    fun existsByDuration(duration: PlanDuration): Boolean
     fun findAllByOrderByDurationAsc(): List<Plan>
 }
