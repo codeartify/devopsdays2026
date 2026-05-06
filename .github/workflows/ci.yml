@@ -3,9 +3,11 @@ name: Solutions CI
 on:
   push:
     branches:
+      - main
       - solutions
   pull_request:
     branches:
+      - main
       - solutions
 
 permissions:
