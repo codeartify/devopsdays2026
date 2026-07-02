@@ -33,7 +33,13 @@ This project is the property of Codeartify GmbH and may only be used under the t
 
 - Java 25
 - Docker and Docker Compose
-- Maven 3.9+
+- Maven 3.9+ or the included Maven wrappers
+
+Use the root Maven wrapper for the multi-module build:
+
+```bash
+./mvnw -Ddocker.compose.skip=true clean verify
+```
 
 ## Start The System
 
