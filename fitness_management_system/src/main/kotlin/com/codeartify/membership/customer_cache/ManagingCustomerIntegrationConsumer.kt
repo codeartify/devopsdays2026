@@ -24,11 +24,24 @@ class ManagingCustomerIntegrationConsumer(
                 )
                 handleCustomerRegistered(payload)
             }
+
+            "CustomerUpdated" -> {
+                val payload = objectMapper.treeToValue(
+                    event.payload,
+                    CustomerUpdatedIntegrationEventV1::class.java
+                )
+                handleCustomerUpdated(payload)
+            }
         }
     }
 
     private fun handleCustomerRegistered(event: CustomerRegisteredIntegrationEventV1) {
         log.info("Received customer register event {}", event)
+        customerCacheRepository.save(CustomerEntity(event.customerId, event.name, event.email, event.dateOfBirth))
+    }
+
+    private fun handleCustomerUpdated(event: CustomerUpdatedIntegrationEventV1) {
+        log.info("Received customer updated event {}", event)
         customerCacheRepository.save(CustomerEntity(event.customerId, event.name, event.email, event.dateOfBirth))
     }
 }

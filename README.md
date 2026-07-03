@@ -13,7 +13,7 @@ This project is the property of Codeartify GmbH and may only be used under the t
 - `identity` on `http://localhost:8082`
     - manages customers
     - persists customer read models in PostgreSQL
-    - publishes customer registration integration events to Kafka
+    - publishes customer registration and update integration events to Kafka
 
 - `fitness_management_system` on `http://localhost:8081`
     - manages plans and memberships
@@ -232,7 +232,7 @@ DELETE http://localhost:8081/memberships/{{membershipId}}
 | `POST`   | `/customers`      | Create a customer and publish a customer integration event |
 | `GET`    | `/customers`      | List customers                                             |
 | `GET`    | `/customers/{id}` | Get one customer                                           |
-| `PUT`    | `/customers/{id}` | Update a customer in the identity database                 |
+| `PUT`    | `/customers/{id}` | Update a customer and publish a customer integration event |
 | `DELETE` | `/customers/{id}` | Delete a customer                                          |
 
 Create/update request body:
@@ -245,8 +245,10 @@ Create/update request body:
 }
 ```
 
-Only customer creation currently publishes a `CustomerRegistered` integration event. Customer updates and deletes are
-local to the `identity` service and are not propagated to `fitness_management_system`.
+Customer creation publishes a `CustomerRegistered` integration event. Customer updates publish a `CustomerUpdated`
+integration event so `fitness_management_system` can refresh its local customer cache before sending future invoice
+notifications. Customer deletes are local to the `identity` service and are not propagated to
+`fitness_management_system`.
 
 ### Plan API (`fitness_management_system`, port `8081`)
 

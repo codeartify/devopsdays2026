@@ -2,6 +2,7 @@ package com.codeartify.managingcustomers
 
 import com.codeartify.managingcustomers.integration.CustomerPublisher
 import com.codeartify.managingcustomers.integration.CustomerRegisteredIntegrationEventV1
+import com.codeartify.managingcustomers.integration.CustomerUpdatedIntegrationEventV1
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -54,7 +55,9 @@ class CustomerService(
         customer.email = request.email.trim()
         customer.dateOfBirth = request.dateOfBirth.toString()
 
-        return toResponse(customerRepository.save(customer))
+        val savedCustomer = customerRepository.save(customer)
+        publishCustomerUpdated(savedCustomer)
+        return toResponse(savedCustomer)
     }
 
     @Transactional
@@ -72,17 +75,37 @@ class CustomerService(
     )
 
     private fun publishCustomerRegistered(customer: CustomerEntity) {
-        val envelope = mapOf(
-            "type" to "CustomerRegistered",
-            "version" to 1,
-            "payload" to CustomerRegisteredIntegrationEventV1(
+        publishCustomerEvent(
+            customer = customer,
+            type = "CustomerRegistered",
+            payload = CustomerRegisteredIntegrationEventV1(
                 customerId = customer.id,
                 name = customer.name,
                 email = customer.email,
                 dateOfBirth = LocalDate.parse(customer.dateOfBirth)
             )
         )
+    }
 
+    private fun publishCustomerUpdated(customer: CustomerEntity) {
+        publishCustomerEvent(
+            customer = customer,
+            type = "CustomerUpdated",
+            payload = CustomerUpdatedIntegrationEventV1(
+                customerId = customer.id,
+                name = customer.name,
+                email = customer.email,
+                dateOfBirth = LocalDate.parse(customer.dateOfBirth)
+            )
+        )
+    }
+
+    private fun publishCustomerEvent(customer: CustomerEntity, type: String, payload: Any) {
+        val envelope = mapOf(
+            "type" to type,
+            "version" to 1,
+            "payload" to payload
+        )
         log.info("Publishing event: {}", envelope)
 
         customerPublisher.publish(customer.id, envelope)
