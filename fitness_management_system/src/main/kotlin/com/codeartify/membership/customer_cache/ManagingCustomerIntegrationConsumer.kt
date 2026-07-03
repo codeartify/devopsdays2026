@@ -24,11 +24,29 @@ class ManagingCustomerIntegrationConsumer(
                 )
                 handleCustomerRegistered(payload)
             }
+
+            "CustomerEmailAddressChanged" -> {
+                val payload = objectMapper.treeToValue(
+                    event.payload,
+                    CustomerEmailAddressChangedIntegrationEventV1::class.java
+                )
+                handleCustomerEmailAddressChanged(payload)
+            }
         }
     }
 
     private fun handleCustomerRegistered(event: CustomerRegisteredIntegrationEventV1) {
         log.info("Received customer register event {}", event)
         customerCacheRepository.save(CustomerEntity(event.customerId, event.name, event.email, event.dateOfBirth))
+    }
+
+    private fun handleCustomerEmailAddressChanged(event: CustomerEmailAddressChangedIntegrationEventV1) {
+        log.info("Received customer email address changed event {}", event)
+
+        val customer = customerCacheRepository.findById(event.customerId)
+            .orElseThrow { IllegalStateException("Customer with ID ${event.customerId} not found in local cache") }
+
+        customer.email = event.email
+        customerCacheRepository.save(customer)
     }
 }

@@ -1,6 +1,7 @@
 package com.codeartify.managingcustomers
 
 import com.codeartify.managingcustomers.integration.CustomerPublisher
+import com.codeartify.managingcustomers.integration.CustomerEmailAddressChangedIntegrationEventV1
 import com.codeartify.managingcustomers.integration.CustomerRegisteredIntegrationEventV1
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
@@ -50,11 +51,20 @@ class CustomerService(
         val customer = customerRepository.findById(customerId)
             .orElseThrow { IllegalArgumentException("Customer with ID $customerId not found") }
 
+        val updatedEmail = request.email.trim()
+        val emailAddressChanged = customer.email != updatedEmail
+
         customer.name = request.name.trim()
-        customer.email = request.email.trim()
+        customer.email = updatedEmail
         customer.dateOfBirth = request.dateOfBirth.toString()
 
-        return toResponse(customerRepository.save(customer))
+        val savedCustomer = customerRepository.save(customer)
+
+        if (emailAddressChanged) {
+            publishCustomerEmailAddressChanged(savedCustomer)
+        }
+
+        return toResponse(savedCustomer)
     }
 
     @Transactional
@@ -80,6 +90,21 @@ class CustomerService(
                 name = customer.name,
                 email = customer.email,
                 dateOfBirth = LocalDate.parse(customer.dateOfBirth)
+            )
+        )
+
+        log.info("Publishing event: {}", envelope)
+
+        customerPublisher.publish(customer.id, envelope)
+    }
+
+    private fun publishCustomerEmailAddressChanged(customer: CustomerEntity) {
+        val envelope = mapOf(
+            "type" to "CustomerEmailAddressChanged",
+            "version" to 1,
+            "payload" to CustomerEmailAddressChangedIntegrationEventV1(
+                customerId = customer.id,
+                email = customer.email
             )
         )
 
